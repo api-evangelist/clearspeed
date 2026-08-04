@@ -1,0 +1,87 @@
+generated: '2026-08-02'
+method: searched
+source: live probes of every Clearspeed host in apis.yml and OpenAPI servers[]
+notes: >-
+  Only the Redocly-hosted developer portal (developer.clearspeed.com) publishes any
+  /.well-known/ documents, and those describe the OAuth protection on its documentation
+  MCP server. The Integration API hosts (api.us / api.uk) and the marketing site expose
+  no well-known surface. No security.txt, no api-catalog, no OIDC discovery, no agent card.
+hosts:
+- host: https://developer.clearspeed.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: clearspeed-oauth-authorization-server.json
+    spec: RFC 8414
+    note: issuer is https://auth.cloud.redocly.com (Redocly Reunite portal identity)
+  - path: /.well-known/oauth-protected-resource/mcp
+    status: 200
+    file: clearspeed-oauth-protected-resource-mcp.json
+    spec: RFC 9728
+    note: protects https://developer.clearspeed.com/mcp
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.clearspeed.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.us.clearspeed.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.uk.clearspeed.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+x-evidence:
+  fetched: '2026-08-02'
+  hosts_probed: 4
+  documents_found: 2

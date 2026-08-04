@@ -1,0 +1,15 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/clearspeed-integration-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: authorization
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/clearspeed-integration-api-openapi.yml

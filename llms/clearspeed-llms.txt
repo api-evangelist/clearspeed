@@ -1,0 +1,80 @@
+# Clearspeed
+
+> Clearspeed analyzes voice signals in real time to assess risk, accelerate vetting, prevent fraud, and enable trusted decisions at scale. Its voice-based risk assessment technology flags elevated risk at the point of a claim, application, or interaction while reducing friction for the low-risk majority.
+
+Clearspeed serves insurance, government, defense, and financial services organizations. The site is organized into solution/industry pages, use cases, client stories, and a resource hub (blog, podcasts, videos, webinars, whitepapers). Collection index pages are linked below rather than every individual post.
+
+## Company
+
+- [About Clearspeed](https://www.clearspeed.com/about-us): How Clearspeed assesses risk quickly and accurately to help organizations make faster, more confident decisions.
+- [Leadership](https://www.clearspeed.com/leadership): The Clearspeed leadership team and experts in voice-based risk assessment.
+- [Technology](https://www.clearspeed.com/technology): Voice-based risk assessment that analyzes risk in real time to reduce fraud, accelerate screening, and build trust faster.
+- [Trust Faster](https://www.clearspeed.com/trust-faster): How Clearspeed helps organizations get to trust faster while reducing friction.
+- [ROI & Impact](https://www.clearspeed.com/roi-impact): Measurable impact on fraud losses, costs, and operational efficiency.
+- [Security Commitment](https://www.clearspeed.com/security-commitment): Clearspeed's approach to data security and compliance.
+- [FAQ](https://www.clearspeed.com/faq): Answers about Clearspeed's technology, deployment, integrations, and compliance.
+- [Request a Demo](https://www.clearspeed.com/demo): See voice-based risk assessment in action for your organization.
+- [Contact](https://www.clearspeed.com/contact): Reach the Clearspeed team for sales, support, or general inquiries.
+
+## Insurance solutions
+
+- [Insurance Solutions](https://www.clearspeed.com/insurance-solutions): Detect insurance fraud earlier, reduce losses, and streamline genuine customer interactions.
+- [Claims Experience](https://www.clearspeed.com/insurance-claims-experience): Screen claims for fraud risk in real time so investigators focus on suspicious claims while reducing friction for policyholders.
+- [Underwriting](https://www.clearspeed.com/insurance-underwriting): Identify underwriting fraud before policies are issued and improve risk selection.
+- [Life & Health](https://www.clearspeed.com/life-health): Detect application fraud and undisclosed risk factors during life insurance underwriting.
+- [Workers' Compensation](https://www.clearspeed.com/workers-compensation): Reduce unnecessary friction while keeping fraud risk in view throughout the claims journey.
+- [Claims & Transactions](https://www.clearspeed.com/claims-transactions): Detect risk across payments and claims transactions in real time to protect revenue.
+
+## Government & defense solutions
+
+- [Government](https://www.clearspeed.com/government): Voice-based risk assessment for government agencies to accelerate screening and reduce fraud.
+- [Defense](https://www.clearspeed.com/defense): Assess risk faster across military and defense operations, personnel vetting, and mission readiness.
+- [Continuous Vetting](https://www.clearspeed.com/government-continuous-vetting): Modernize continuous vetting and identify emerging risk faster.
+- [Security Vetting & Access Control](https://www.clearspeed.com/security-vetting-access-control): Strengthen personnel security vetting and identify risk before granting access.
+- [Insider Threat](https://www.clearspeed.com/insider-threat): Detect insider threat risk before incidents occur across workforce screening and investigations.
+- [Immigration & Border Security](https://www.clearspeed.com/immigration-border-security): Support immigration and border decisions with real-time risk assessment.
+
+## Financial services solutions
+
+- [Financial Services & Banking](https://www.clearspeed.com/financial-services-banking): Protect trustworthy customers while managing the burden of fraud and scams.
+- [Fraud & Financial Crime](https://www.clearspeed.com/fraud-financial-crime): Detect fraud and financial crime before losses occur, at the point of application, claim, or transaction.
+- [AML / KYC](https://www.clearspeed.com/aml-kyc): Identify elevated risk during onboarding and ongoing reviews.
+- [Account Takeover](https://www.clearspeed.com/account-takeover): Identify suspicious behavior during customer interactions and protect accounts in real time.
+- [Loan & Credit Processing](https://www.clearspeed.com/loan-credit-processing): Identify fraud risk during loan and credit applications while accelerating genuine approvals.
+- [Fraud, Waste & Abuse](https://www.clearspeed.com/fraud-waste-abuse-fwa): Help investigators focus resources on cases that warrant closer review.
+- [Benefits & Payments](https://www.clearspeed.com/benefits-payments): Detect benefits fraud before payments are made while reducing friction for legitimate applicants.
+
+## Other screening & risk use cases
+
+- [Hiring & Candidate Screening](https://www.clearspeed.com/hiring-screening): Identify hiring fraud, resume misrepresentation, and screening risk early.
+- [Substance Screening](https://www.clearspeed.com/substance-screening): Flag deception and elevated risk during substance screening interviews.
+- [Sports Integrity](https://www.clearspeed.com/sports-integrity): Voice-based risk assessment to protect competitive fairness and integrity in sports.
+- [Vendor Risk Management](https://www.clearspeed.com/vendor-risk-management): Screen suppliers, contractors, and partners for fraud, misconduct, and compliance concerns.
+- [All Use Cases](https://www.clearspeed.com/use-cases): Full index of Clearspeed use cases across industries.
+
+## Client stories
+
+- [Allianz](https://www.clearspeed.com/client-story/allianz)
+- [Zurich](https://www.clearspeed.com/client-story/zurich)
+- [Abacai](https://www.clearspeed.com/client-story/abacai)
+- [SOCOM](https://www.clearspeed.com/client-story/socom)
+- [Uganda](https://www.clearspeed.com/client-story/uganda)
+- [Energy Company](https://www.clearspeed.com/client-story/energy-company)
+- [All Client Stories](https://www.clearspeed.com/client-stories)
+
+## Resources
+
+- [Resource Hub](https://www.clearspeed.com/resource-hub): Central library of Clearspeed content.
+- [Blog](https://www.clearspeed.com/blog): Articles and insights on fraud, risk, and trust.
+- [Newsroom](https://www.clearspeed.com/newsroom): Latest news, press releases, and announcements.
+- [Case Studies](https://www.clearspeed.com/case-studies): How Clearspeed's voice analytics deliver results.
+- [Podcasts](https://www.clearspeed.com/podcasts): Conversations on trust, risk, and insurance.
+- [Videos](https://www.clearspeed.com/videos): Video library and product explainers.
+- [Webinars](https://www.clearspeed.com/webinars): On-demand and live webinars.
+- [Whitepaper: A New Era of P&C Risk and Fraud Assessment](https://www.clearspeed.com/whitepaper/a-new-era-of-p-c-risk-and-fraud-assessment-leveraging-unique-voice-analytics-for-new-insights)
+- [Whitepaper: The Next Multi-Billion Dollar Variable in Insurance](https://www.clearspeed.com/whitepaper/the-next-multi-billion-dollar-variable-in-the-insurance-industry)
+
+## Legal
+
+- [Privacy Policy](https://www.clearspeed.com/privacy-policy)
+- [Terms of Service](https://www.clearspeed.com/terms-of-service)

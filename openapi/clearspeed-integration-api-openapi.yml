@@ -1,0 +1,1220 @@
+openapi: 3.1.0
+info:
+  title: Clearspeed Integration API
+  description: >
+    ## Overview
+
+    The Clearspeed Integration API enables you to programmatically manage
+    participants
+
+    within your questionnaires — create new participants and update
+
+    outcome tracking. Additionally, Clearspeed delivers assessment results
+    directly to
+
+    your system via webhooks, eliminating the need to poll for results.
+
+
+    ## Authentication
+
+    All requests must include your API key in the `Authorization` header:
+
+    ```
+
+    Authorization: <your-api-key>
+
+    ```
+
+
+    API keys are scoped to a specific questionnaire and carry explicit
+    permissions.
+
+    Your first key must be created from the Clearspeed web application by a
+    questionnaire Admin.
+
+    Once you have a key with the `apikey:write` scope you can create additional
+    keys via the API.
+
+
+    See the [API Keys & Authentication
+    guide](https://developer.clearspeed.com/api-keys) for a
+
+    step-by-step walkthrough and a full description of all available scopes.
+
+
+    ## Environments
+
+    | Region | Base URL |
+
+    |--------|----------|
+
+    | US Production | `https://api.us.clearspeed.com/questionnaire` |
+
+    | UK Production | `https://api.uk.clearspeed.com/questionnaire` |
+  version: ''
+servers:
+  - url: https://api.us.clearspeed.com/questionnaire
+    description: US Production server
+  - url: https://api.uk.clearspeed.com/questionnaire
+    description: UK Production server
+tags:
+  - name: ''
+  - name: ''
+paths:
+  /v1/participant:
+    post:
+      tags:
+        - ''
+      security:
+        - authorization: []
+      summary: Participant
+      description: |
+        Creates a new participant.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/Participant'
+            examples:
+              create:
+                summary: Create new participant
+                value:
+                  project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                  phone_number1: '+916263877039'
+                  phone_number2: ''
+                  interview_ref_num: '7858934895810'
+                  external_ref_id: 12345-46b5-464d-a8e4-afecc
+                  email: participant@gmail.com
+                  language: English
+      responses:
+        '200':
+          description: Participant created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyParticipantResponse'
+              examples:
+                createParticipant:
+                  summary: Create participant response
+                  value:
+                    project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                    phone_number1: '+916263877039'
+                    phone_number2: ''
+                    interview_ref_num: '7858934895810'
+                    external_ref_id: 12345-46b5-464d-a8e4-afecc
+                    participant_uuid: 01977df0-57c1-7dcf-8916-df741aa66691
+                    email: participant@gmail.com
+                    language: English
+                    particpant_guide_link: >-
+                      https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+                    is_participant_allowed: true
+                    outcome: null
+                    outcome_ts: null
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                badRequest:
+                  summary: Invalid JSON format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid JSON format
+                    timestamp: 27-03-2026 12:34:56
+                projectUUIDRequired:
+                  summary: Missing project_uuid
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: project_uuid is required
+                    timestamp: 27-03-2026 12:34:56
+                irnCannotBeEmpty:
+                  summary: Missing interview_ref_num / IRN
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: IRN cannot be empty.
+                    timestamp: 27-03-2026 12:34:56
+                invalidProjectUUIDFormat:
+                  summary: Invalid project_uuid format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid project_uuid format
+                    timestamp: 27-03-2026 12:34:56
+                invalidParticipantUUIDFormat:
+                  summary: Invalid participant_uuid format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid participant_uuid format
+                    timestamp: 27-03-2026 12:34:56
+                invalidEmailFormat:
+                  summary: Invalid email format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid email format
+                    timestamp: 27-03-2026 12:34:56
+                duplicateIRN:
+                  summary: Duplicate IRN
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: >-
+                      Error: Duplicate IRN. IRN number 7858934895810 has already
+                      been assigned to another participant.
+                    timestamp: 27-03-2026 12:34:56
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                unauthorized:
+                  summary: API key is required
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: API key is required
+                    timestamp: 27-03-2026 12:34:56
+                invalidAPIKey:
+                  summary: Invalid API key
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: Invalid API key
+                    timestamp: 27-03-2026 12:34:56
+        '403':
+          description: >-
+            API key is not associated with the participant's questionnaire
+            tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    error: FORBIDDEN
+                    status: 403
+                    message: API Key not associated with this Questionnaire
+                    timestamp: 27-03-2026 12:34:56
+        '404':
+          description: Participant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                notFound:
+                  summary: Participant not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Participant not found
+                    timestamp: 27-03-2026 12:34:56
+                projectNotFound:
+                  summary: Project not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Project not found
+                    timestamp: 27-03-2026 12:34:56
+  /v1/participant/{participant_id}:
+    put:
+      tags:
+        - ''
+      security:
+        - authorization: []
+      summary: Outcome Tracking
+      description: >
+        Update the **outcome tracking** fields for an existing participant using
+        the v1 external API format.
+
+
+        - Authenticated using the `authorization` header.
+
+        - Validates that the API key is associated with the participant's
+        questionnaire tenant.
+
+        - Updates the participant's outcome and optional outcome timestamp.
+      parameters:
+        - name: participant_id
+          in: path
+          required: true
+          description: UUID of the participant whose outcome tracking should be updated
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                outcome:
+                  type: string
+                  description: Outcome code to set for the participant
+                  example: $10,Reviewed and Mitigated
+                outcome_ts:
+                  type: string
+                  format: date-time
+                  description: >
+                    Outcome timestamp in RFC3339 format. If omitted, the current
+                    UTC time will be used.
+                  example: '2025-12-12T06:06:29Z'
+              required:
+                - outcome
+            examples:
+              updateOutcome:
+                summary: Update participant outcome
+                value:
+                  outcome: $10,Reviewed and Mitigated
+                  outcome_ts: '2025-12-12T06:06:29Z'
+      responses:
+        '200':
+          description: Outcome tracking updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                badRequest:
+                  summary: Invalid JSON format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid JSON format
+                    timestamp: 27-03-2026 12:34:56
+                invalidParticipantIdFormat:
+                  summary: Invalid participant_id format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid participant_id format
+                    timestamp: 27-03-2026 12:34:56
+                invalidOutcomeTsFormat:
+                  summary: Invalid outcome_ts format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: >-
+                      Invalid outcome_ts format. Use RFC3339 format (e.g.,
+                      2025-12-12T06:06:29Z)
+                    timestamp: 27-03-2026 12:34:56
+                failedToUpdateOutcomeTracking:
+                  summary: Failed to update outcome tracking
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Failed to update outcome tracking
+                    timestamp: 27-03-2026 12:34:56
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                unauthorized:
+                  summary: API key is required
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: API key is required
+                    timestamp: 27-03-2026 12:34:56
+                invalidAPIKey:
+                  summary: Invalid API key
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: Invalid API key
+                    timestamp: 27-03-2026 12:34:56
+        '403':
+          description: >-
+            API key is not associated with the participant's questionnaire
+            tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    error: FORBIDDEN
+                    status: 403
+                    message: API Key not associated with this Questionnaire
+                    timestamp: 27-03-2026 12:34:56
+        '404':
+          description: Participant or questionnaire not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                notFound:
+                  summary: Participant not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Participant not found
+                    timestamp: 27-03-2026 12:34:56
+                questionnaireNotFound:
+                  summary: Questionnaire not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Questionnaire not found
+                    timestamp: 27-03-2026 12:34:56
+  /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys:
+    post:
+      tags:
+        - ''
+      security:
+        - authorization: []
+      summary: API Key
+      operationId: createApiKey
+      description: >
+        Create a new API key for the specified questionnaire.
+
+
+        Requires a key with the `apikey:write` scope. The full key value is
+        returned **only in
+
+        this response** — store it securely immediately. Subsequent list calls
+        return a masked version.
+      parameters:
+        - name: tenant_id
+          in: path
+          required: true
+          description: UUID of the tenant
+          schema:
+            type: string
+            format: uuid
+        - name: questionnaire_id
+          in: path
+          required: true
+          description: UUID of the questionnaire
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyCreateRequest'
+            examples:
+              participantWriter:
+                summary: Key for creating participants
+                value:
+                  key_name: ci-participant-writer
+                  scopes:
+                    - participant:write
+              fullAccess:
+                summary: Key with all participant and key management scopes
+                value:
+                  key_name: admin-key
+                  scopes:
+                    - participant:write
+                    - apikey:write
+                    - apikey:delete
+      responses:
+        '201':
+          description: >-
+            API key created. The `api_key` value is shown only once — save it
+            now.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+              examples:
+                created:
+                  summary: Newly created key (full value visible)
+                  value:
+                    id: a1b2c3d4-0000-0000-0000-000000000001
+                    api_key: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    key_name: ci-participant-writer
+                    scopes:
+                      - participant:write
+                    questionnaire_id: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                    create_ts: '2026-04-10T10:00:00Z'
+                    update_ts: '2026-04-10T10:00:00Z'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingKeyName:
+                  summary: Missing key_name
+                  value:
+                    error: key_name is required and cannot be null or empty
+                missingScope:
+                  summary: Missing scopes
+                  value:
+                    error: scope is required and cannot be null or empty
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                unauthorized:
+                  summary: No authorization header
+                  value:
+                    error: Authorization header is required
+        '403':
+          description: API key does not have the `apikey:write` scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                forbidden:
+                  summary: Insufficient scope
+                  value:
+                    error: You are not authorized to perform this operation
+  /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}:
+    delete:
+      tags:
+        - ''
+      security:
+        - authorization: []
+      summary: API Key
+      operationId: deleteApiKey
+      description: >
+        Permanently delete an API key. Requires the `apikey:delete` scope.
+
+
+        This action cannot be undone. Any integration using the deleted key will
+        immediately
+
+        start receiving `401 Unauthorized` responses.
+
+
+        The `apikey` path parameter accepts:
+
+        - The raw **api_key value**
+      parameters:
+        - name: tenant_id
+          in: path
+          required: true
+          description: UUID of the tenant
+          schema:
+            type: string
+            format: uuid
+        - name: questionnaire_id
+          in: path
+          required: true
+          description: UUID of the questionnaire
+          schema:
+            type: string
+            format: uuid
+        - name: apikey
+          in: path
+          required: true
+          description: |
+            api_key value of the key to delete.
+          schema:
+            type: string
+          examples:
+            apiKeyValue:
+              summary: Delete by api_key value
+              value: 3f8a1b2c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a
+      responses:
+        '204':
+          description: API key deleted successfully
+        '400':
+          description: apikey path parameter is missing or empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingKeyId:
+                  summary: apikey not provided
+                  value:
+                    error: API key value is required
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingHeader:
+                  summary: Authorization header not provided
+                  value:
+                    error: Authorization header is required
+                invalidKey:
+                  summary: API key does not exist or is invalid
+                  value:
+                    error: Invalid API key
+        '403':
+          description: Insufficient scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                insufficientScope:
+                  summary: API key missing required scope
+                  value:
+                    error: Invalid API key scope
+        '404':
+          description: API key not found or does not belong to this questionnaire/tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                notFound:
+                  summary: Key not found
+                  value:
+                    error: API key not found or Invalid tenant for this questionnaire
+components:
+  schemas:
+    Participant:
+      type: object
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number (optional)
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number (optional)
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID (optional)
+          example: 12345-46b5-464d-a8e4-afecc
+        email:
+          type: string
+          description: Email address (optional)
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Language name (optional)
+          example: English
+      required:
+        - project_uuid
+        - interview_ref_num
+    LegacyParticipantResponse:
+      type: object
+      description: Legacy v1 participant response with outcome tracking fields
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID
+          example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
+        email:
+          type: string
+          description: Email address
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Participant language
+          example: English
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+            - string
+            - 'null'
+        outcome_ts:
+          type:
+            - string
+            - 'null'
+    OutcomeTrackingResponse:
+      type: object
+      description: Outcome tracking response
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID
+          example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
+        email:
+          type: string
+          description: Email address
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Participant language
+          example: English
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+            - string
+            - 'null'
+          description: Outcome code for the participant
+          example: $10,Reviewed and Mitigated
+        outcome_ts:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: Outcome timestamp in RFC3339 format
+          example: '2025-12-12T06:06:29Z'
+    LegacyErrorResponse:
+      type: object
+      description: Legacy v1 error response format
+      properties:
+        error:
+          type: string
+          enum:
+            - UNAUTHORIZED
+            - BAD_REQUEST
+            - NOT_FOUND
+            - FORBIDDEN
+            - INTERNAL_SERVER_ERROR
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    OutcomeTrackingErrorResponse:
+      type: object
+      description: Error response schema for outcome tracking
+      properties:
+        error:
+          type: string
+          enum:
+            - UNAUTHORIZED
+            - BAD_REQUEST
+            - NOT_FOUND
+            - FORBIDDEN
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    ResultWebhookRequest:
+      type: object
+      description: >
+        Clearspeed sends this JSON payload to your configured customer webhook
+        URL
+
+        when a result is published or updated.
+
+        This is an incoming callback payload, not a Clearspeed endpoint request.
+      example:
+        project_uuid: XXXXXXXX-ef1f-4d91-a2e2-7b33132b00f1
+        callback_type: Result Update
+        access_code: 7136XXXX59
+        interview_ref_num: 456XXXX642
+        status: Result Published
+        questions_risk_rating:
+          - sequence: '7'
+            risk_level: LR
+            text: 'Q7 '
+          - sequence: '2'
+            risk_level: HR
+            text: 'Q2 '
+        overall_evaluation: HR
+        is_admission: false
+        is_counter_measure: false
+        is_not_complete: false
+        participant_language: English
+        summary: AR
+        summary_bgcolor: '#dc3545'
+        clear: true
+      properties:
+        project_uuid:
+          type: string
+        callback_type:
+          type: string
+        access_code:
+          type: string
+        interview_ref_num:
+          type: string
+        status:
+          type: string
+        questions_risk_rating:
+          type: array
+          items:
+            type: object
+            properties:
+              sequence:
+                type: string
+              risk_level:
+                type: string
+              text:
+                type: string
+        overall_evaluation:
+          type: string
+        is_admission:
+          type: boolean
+        is_counter_measure:
+          type: boolean
+        is_not_complete:
+          type: boolean
+        participant_language:
+          type: string
+        summary:
+          type: string
+          description: Result summary label (for example, HR/LR/G/AR/NC)
+        summary_bgcolor:
+          type: string
+          description: Hex color code associated with the summary label
+          example: '#28a745'
+        clear:
+          type: boolean
+          description: Whether result is clear
+        timestamp:
+          type: string
+          format: date-time
+    ApiKeyCreateRequest:
+      type: object
+      description: Request body for creating a new API key
+      required:
+        - key_name
+        - scopes
+      properties:
+        key_name:
+          type: string
+          description: Human-readable name to identify this key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: |
+            List of scopes to grant this key. Valid values:
+            - `participant:write` — create participants
+            - `apikey:write` — create API keys for the same questionnaire
+            - `apikey:delete` — delete API keys for the same questionnaire
+          items:
+            type: string
+            enum:
+              - participant:write
+              - apikey:write
+              - apikey:delete
+          example:
+            - participant:write
+    ApiKey:
+      type: object
+      description: An API key record
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the API key
+          example: a1b2c3d4-0000-0000-0000-000000000001
+        api_key:
+          type: string
+          description: >
+            The API key value. Returned in full only on creation — masked in all
+            subsequent responses.
+          example: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        key_name:
+          type: string
+          description: Human-readable name for the key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: Scopes granted to this key
+          items:
+            type: string
+          example:
+            - participant:write
+        questionnaire_id:
+          type: string
+          format: uuid
+          description: UUID of the questionnaire this key is scoped to
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        create_ts:
+          type: string
+          format: date-time
+          description: Creation timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+        update_ts:
+          type: string
+          format: date-time
+          description: Last updated timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
+  securitySchemes:
+    authorization:
+      type: apiKey
+      in: header
+      name: Authorization
+webhooks:
+  result_update:
+    post:
+      tags:
+        - ''
+      security: []
+      summary: Result Update Webhook
+      description: |
+        Clearspeed sends a POST request to the customer's webhook endpoint
+        when a result is published or updated.
+        Customers must return HTTP 200 to acknowledge receipt.
+      servers:
+        - url: https://www.customerapi.com/v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResultWebhookRequest'
+            examples:
+              Overall evaluation with AR:
+                summary: Overall evaluation with AR
+                value:
+                  project_uuid: XXXXXXXX-ef1f-4d91-a2e2-7b33132b00f1
+                  callback_type: Result Update
+                  access_code: 7136XXXX59
+                  interview_ref_num: 456XXXX642
+                  status: Result Published
+                  questions_risk_rating:
+                    - sequence: '7'
+                      risk_level: LR
+                      text: 'Q7 '
+                    - sequence: '4'
+                      risk_level: LR
+                      text: 'Q4 '
+                    - sequence: '2'
+                      risk_level: HR
+                      text: 'Q2 '
+                    - sequence: '5'
+                      risk_level: HR
+                      text: 'CM Q5 '
+                    - sequence: '6'
+                      risk_level: HR
+                      text: 'Q6 '
+                    - sequence: '1'
+                      risk_level: HR
+                      text: 'CM Q1 '
+                    - sequence: '3'
+                      risk_level: HR
+                      text: 'Q3 '
+                  overall_evaluation: HR
+                  is_admission: false
+                  is_counter_measure: false
+                  is_not_complete: false
+                  participant_language: English
+                  summary: AR
+                  summary_bgcolor: '#dc3545'
+                  clear: true
+              Attempted - Incomplete:
+                summary: Attempted - Incomplete
+                value:
+                  project_uuid: xxxxx-xxxxx-xxxxx-8a5f-xxxx
+                  questions_risk_rating:
+                    - sequence: '3'
+                      risk_level: DC
+                      text: Test Question 1
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: DC
+                  is_not_complete: false
+                  access_code: xxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxxxx
+                  status: Attempted - Incomplete
+              Attempted - Partial:
+                summary: Attempted - Partial
+                value:
+                  project_uuid: wwwwwww-wwwwww-1wwwwww
+                  questions_risk_rating:
+                    - sequence: '1'
+                      risk_level: NC
+                      text: Q3
+                      note: to noisy
+                    - sequence: '2'
+                      risk_level: NC
+                      text: Q2
+                      note: to noisy
+                    - sequence: '3'
+                      risk_level: NC
+                      text: Q1
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: NC
+                  is_not_complete: true
+                  access_code: xxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxxx
+                  status: Attempted - Partial
+                  summary: NC
+                  summary_bgcolor: '#6c757d'
+                  clear: false
+              Overall evaluation with HR:
+                summary: Overall evaluation with HR
+                value:
+                  project_uuid: wwwwwww-wwwwww-1wwwwww
+                  questions_risk_rating:
+                    - sequence: '6'
+                      risk_level: LR
+                      text: xxxxxxxxx?
+                      note: to noisy
+                    - sequence: '3'
+                      risk_level: HR
+                      text: xxxxxx?
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: HR
+                  is_not_complete: false
+                  access_code: xxxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxx
+                  status: Result Published
+                  summary: HR
+                  summary_bgcolor: '#dc3545'
+                  clear: false
+              Overall evaluation with LR:
+                summary: Overall evaluation with LR
+                value:
+                  project_uuid: wwwwwww-wwwwww-1wwwwww
+                  questions_risk_rating:
+                    - sequence: '3'
+                      risk_level: LR
+                      text: xxxxxxxxxx?
+                      note: to noisy
+                    - sequence: '6'
+                      risk_level: LR
+                      text: xxxxxx?
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: LR
+                  is_not_complete: false
+                  access_code: cxxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxx
+                  status: Result Published
+                  summary: AR
+                  summary_bgcolor: '#28a745'
+                  clear: true
+              Overall evaluation with G:
+                summary: Overall evaluation with G
+                value:
+                  project_uuid: xxxxx-xxx-xxx-xxxx-xxxxx
+                  questions_risk_rating:
+                    - sequence: '1'
+                      risk_level: ''
+                      text: xxxxxxx
+                      note: to noisy
+                    - sequence: '2'
+                      risk_level: ''
+                      text: xxxxxxx
+                      note: to noisy
+                    - sequence: '3'
+                      risk_level: ''
+                      text: xxxxxxx
+                      note: to noisy
+                    - sequence: '4'
+                      risk_level: ''
+                      text: xxxxxxx
+                    - sequence: xx
+                      risk_level: xx
+                      text: xxxxxxx
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: G
+                  is_not_complete: false
+                  access_code: xxxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxxx
+                  status: Result Published
+                  timestamp: xxx-xx-xx:xx:xx
+                  summary: G
+                  summary_bgcolor: '#28a745'
+                  clear: true
+              Overall evaluation with LR/AD:
+                summary: Overall evaluation with LR/AD
+                value:
+                  project_uuid: wwwwwww-wwwwww-1wwwwww
+                  questions_risk_rating:
+                    - sequence: '1'
+                      risk_level: AD
+                      text: null
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: HR
+                  is_not_complete: false
+                  access_code: xxxxxxx
+                  is_admission: true
+                  participant_language: English
+                  interview_ref_num: xxxxxxxx
+                  status: Result Published
+                  summary: HR
+                  summary_bgcolor: '#dc3545'
+                  clear: false
+              Overall evaluation with Precision R/G -> G:
+                summary: Overall evaluation with Precision R/G -> G
+                value:
+                  project_uuid: xxxxx-xxxx-xxxx-xxxx-xxxxx
+                  questions_risk_rating:
+                    - sequence: '1'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '2'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '3'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '4'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: G
+                  is_not_complete: false
+                  access_code: xxxxxxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxxxxxxxx
+                  status: Result Published
+                  timestamp: xxxx-xxx-xxTxx:xx:xxZ
+                  summary: G
+                  summary_bgcolor: '#28a745'
+                  clear: true
+              Overall evaluation with Precision R/G -> R:
+                summary: Overall evaluation with Precision R/G -> R
+                value:
+                  project_uuid: xxxxx-xxxx-xxxx-xxxx-xxxxx
+                  questions_risk_rating:
+                    - sequence: '1'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '2'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '3'
+                      risk_level: G
+                      text: xxxxxx
+                      note: to noisy
+                    - sequence: '4'
+                      risk_level: R
+                      text: xxxxxx
+                      note: to noisy
+                  callback_type: Result Update
+                  is_counter_measure: false
+                  overall_evaluation: R
+                  is_not_complete: false
+                  access_code: xxxxxxxxxx
+                  is_admission: false
+                  participant_language: English
+                  interview_ref_num: xxxxxxxxxxxx
+                  status: Result Published
+                  timestamp: xxxx-xxx-xxTxx:xx:xxZ
+                  summary: G
+                  summary_bgcolor: '#28a745'
+                  clear: true
+              Under_Review:
+                summary: Under_Review
+                value:
+                  project_uuid: wwwwwww-wwwwww-1wwwwww
+                  callback_type: Result Update
+                  interview_ref_num: xxxxxxx
+                  access_code: xxxxxx
+                  status: under_review
+      responses:
+        '200':
+          description: Result received

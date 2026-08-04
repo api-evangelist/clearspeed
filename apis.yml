@@ -1,23 +1,131 @@
 aid: clearspeed
 name: Clearspeed
-description: 'Clearspeed is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Clearspeed is a voice-based risk assessment company whose AI analyzes
+  involuntary vocal characteristics — tone, cadence, hesitation and stress — in a subject''s
+  spoken yes/no answers to produce an objective, language-independent risk indicator
+  without requiring PII. Founded in 2016, it serves insurance claims and underwriting,
+  government and defense vetting, financial services fraud and AML/KYC, plus hiring
+  and vendor screening. Clearspeed exposes the Clearspeed Integration API, a REST
+  contract on regional US and UK hosts that lets customers create participants against
+  a questionnaire, track outcomes, and manage scoped API keys, with assessment results
+  delivered back by webhook rather than polling.'
+image: https://www.clearspeed.com/opengraph.jpg
 url: https://raw.githubusercontent.com/api-evangelist/clearspeed/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-02'
 modified: '2026-08-02'
 tags:
 - Company
-apis: []
+- Risk Assessment
+- Fraud Detection
+- Voice Analytics
+- Artificial Intelligence
+- Insurance
+- Identity Verification
+- Screening
+- Security
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: clearspeed:integration-api
+  name: Clearspeed Integration API
+  description: 'REST API for embedding Clearspeed voice-based risk assessment into
+    an existing system. Create participants against a questionnaire, update outcome
+    tracking, and create or delete scoped API keys. Assessment results are delivered
+    to a customer-configured webhook endpoint when a result is published or updated.
+    Requests authenticate with a questionnaire-scoped API key in the Authorization
+    header; regional US and UK production hosts are available.'
+  humanURL: https://developer.clearspeed.com/apis/public/integration-api
+  baseURL: https://api.us.clearspeed.com/questionnaire
+  tags:
+  - Risk Assessment
+  - Fraud Detection
+  - Voice Analytics
+  - Screening
+  properties:
+  - type: OpenAPI
+    url: openapi/clearspeed-integration-api-openapi.yml
+  - type: Documentation
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: APIReference
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: Authentication
+    url: authentication/clearspeed-authentication.yml
+  - type: Conventions
+    url: conventions/clearspeed-conventions.yml
+  - type: ErrorCatalog
+    url: errors/clearspeed-problem-types.yml
+  - type: DataModel
+    url: data-model/clearspeed-data-model.yml
+  - type: Examples
+    url: examples/clearspeed-integration-api-examples.yml
+  - type: Overlay
+    url: overlays/clearspeed-integration-api-overlay.yaml
+  - type: Webhooks
+    url: asyncapi/clearspeed-webhooks.yml
 common:
 - type: Website
-  url: https://forgeglobal.com/clearspeed_stock/
+  url: https://www.clearspeed.com/
+- type: DeveloperPortal
+  url: https://developer.clearspeed.com/
+- type: Documentation
+  url: https://developer.clearspeed.com/
+- type: APIReference
+  url: https://developer.clearspeed.com/apis/public/integration-api
+- type: GettingStarted
+  url: https://developer.clearspeed.com/
+- type: Support
+  url: https://www.clearspeed.com/contact
+- type: Blog
+  url: https://www.clearspeed.com/blog
+- type: SignUp
+  url: https://www.clearspeed.com/demo
+- type: TermsOfService
+  url: https://www.clearspeed.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.clearspeed.com/privacy-policy
+- type: Compliance
+  url: https://www.clearspeed.com/security-commitment
+- type: TrustCenter
+  url: security/clearspeed-trust-center.yml
+- type: OpenAPI
+  url: openapi/clearspeed-integration-api-openapi.yml
+- type: MCPServer
+  url: mcp/clearspeed-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/clearspeed-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/clearspeed-llms.txt
+- type: WellKnown
+  url: well-known/clearspeed-well-known.yml
+- type: Authentication
+  url: authentication/clearspeed-authentication.yml
+- type: Conventions
+  url: conventions/clearspeed-conventions.yml
+- type: ErrorCatalog
+  url: errors/clearspeed-problem-types.yml
+- type: DataModel
+  url: data-model/clearspeed-data-model.yml
+- type: Examples
+  url: examples/clearspeed-integration-api-examples.yml
+- type: Overlay
+  url: overlays/clearspeed-integration-api-overlay.yaml
+- type: Webhooks
+  url: asyncapi/clearspeed-webhooks.yml
+- type: Lifecycle
+  url: lifecycle/clearspeed-lifecycle.yml
+- type: Conformance
+  url: conformance/clearspeed-conformance.yml
+- type: Packages
+  url: packages/clearspeed-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/clearspeed-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/clearspeed-agentic-access.yml

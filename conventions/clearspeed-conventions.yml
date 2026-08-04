@@ -1,0 +1,117 @@
+generated: '2026-08-02'
+method: searched
+source: https://developer.clearspeed.com/api-keys, https://developer.clearspeed.com/webhooks
+derived_from: openapi/clearspeed-integration-api-openapi.yml
+api: Clearspeed Integration API
+authentication:
+  style: api-key
+  transport: header
+  header: Authorization
+  format: raw key value (no Bearer prefix) — "Authorization: <your-api-key>"
+  scoping: >-
+    Each key is bound to a single questionnaire. A key issued for questionnaire A is
+    rejected for questionnaire B (403 "API Key not associated with this Questionnaire").
+    The key is validated against the questionnaire named by project_uuid in the body or
+    by the questionnaire_id in the URL path.
+  permissions:
+  - scope: participant:write
+    allows: Create participants; update participant outcome
+  - scope: participant:read
+    allows: Read participant data
+  - scope: participant:delete
+    allows: Delete participants
+  - scope: apikey:write
+    allows: Create new API keys for the same questionnaire
+  - scope: apikey:delete
+    allows: Delete API keys for the same questionnaire
+  bootstrap: >-
+    The first key for a questionnaire must be created in the Clearspeed web app by a
+    questionnaire or tenant Admin (Integration page -> API Keys -> Generate New).
+    Subsequent keys can be created via the API with the apikey:write scope.
+  rotation: >-
+    Documented zero-downtime rotation — create a replacement key with the same scopes,
+    switch the integration to it, verify, then delete the old key.
+  docs: https://developer.clearspeed.com/api-keys
+idempotency:
+  supported: false
+  note: >-
+    No Idempotency-Key header, parameter, or retry-safety contract appears in the
+    OpenAPI or the developer portal. The nearest thing to a de-duplication contract is
+    a server-side uniqueness constraint on interview_ref_num (IRN) — a repeat create with
+    an IRN already assigned returns 400 "Error: Duplicate IRN." That is a validation
+    rule, not an idempotency guarantee, and it is not safe to treat a retry as a no-op.
+pagination:
+  supported: false
+  note: No collection/list operations are exposed; every operation acts on a single resource.
+field_expansion:
+  supported: false
+metadata:
+  supported: partial
+  note: >-
+    external_ref_id on the Participant object is a customer-owned correlation field, and
+    interview_ref_num (IRN) is the unique customer reference carried through to the
+    webhook payload. There is no free-form metadata bag.
+request_tracing:
+  request_id_header: null
+  note: No request-id or correlation header is documented on the Integration API.
+versioning:
+  scheme: uri-path
+  current: v1
+  note: >-
+    Participant operations are under /v1/; API key management is under an unversioned
+    /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys path. No version
+    header, no dated version train, no published deprecation policy.
+regions:
+  style: separate base URL per region
+  hosts:
+  - region: US
+    base_url: https://api.us.clearspeed.com/questionnaire
+  - region: UK
+    base_url: https://api.uk.clearspeed.com/questionnaire
+  note: >-
+    Region is chosen by base URL, not by header or path. A questionnaire lives in one
+    region; use the base URL matching your deployment.
+error_envelope:
+  format: proprietary JSON
+  rfc9457: false
+  content_type: application/json
+  shape_participant_api:
+    error: machine-readable code (BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND)
+    status: integer HTTP status, repeated in the body
+    message: human-readable detail
+    timestamp: 'string, dd-MM-yyyy HH:mm:ss (example: 27-03-2026 12:34:56)'
+  shape_apikey_api:
+    error: human-readable message string only (no code, status, or timestamp)
+  note: >-
+    The two surfaces do not share an error envelope. Participant endpoints return the
+    four-field legacy envelope; API-key endpoints return a single `error` string. Clients
+    must branch on which endpoint they called. See errors/clearspeed-problem-types.yml.
+rate_limiting:
+  documented: false
+  headers: []
+  note: No rate limits, quotas, or RateLimit/Retry-After headers are documented.
+webhooks:
+  direction: Clearspeed -> customer endpoint
+  delivery: HTTP POST, application/json
+  ack: customer endpoint must return HTTP 200; any other status or a timeout is a failure
+  auth_to_customer:
+  - method: api-key
+    note: Clearspeed sends a customer-supplied key value as a header on every delivery
+  - method: oauth2-client-credentials
+    note: >-
+      Clearspeed performs the client credentials flow against a customer-supplied token
+      URL (with optional audience, client ID, client secret) before each delivery and
+      sends Authorization: Bearer <token>
+  signature_verification: none documented (no HMAC signature header)
+  automatic_retry: false
+  manual_retry: >-
+    Failed payloads are stored for 15 days. A "Retry Webhook" control on the questionnaire
+    Integration page replays all failures from the past 15 days to the currently configured
+    endpoint. Failures older than 15 days cannot be retried.
+  docs: https://developer.clearspeed.com/webhooks
+cross_links:
+  errors: errors/clearspeed-problem-types.yml
+  lifecycle: lifecycle/clearspeed-lifecycle.yml
+  authentication: authentication/clearspeed-authentication.yml
+  webhooks: asyncapi/clearspeed-webhooks.yml
+  data_model: data-model/clearspeed-data-model.yml

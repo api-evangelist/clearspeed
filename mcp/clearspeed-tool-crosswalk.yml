@@ -1,0 +1,60 @@
+generated: '2026-08-02'
+method: derived
+source: mcp/clearspeed-mcp.yml + openapi/clearspeed-integration-api-openapi.yml
+summary: >-
+  Clearspeed has both an MCP server and an OpenAPI, but they do not project the same
+  data core. The MCP server at developer.clearspeed.com/mcp is a Redocly Reunite
+  DOCUMENTATION server bound to the portal's content, not to the Clearspeed Integration
+  API. Its tools/list is OAuth-gated (401 anonymously) and no tool names are published,
+  so no tool→operation bindings can be asserted. Every Integration API operation is
+  therefore rest_only. Recorded as a real surface divergence rather than papered over.
+surfaces:
+  openapi:
+    file: openapi/clearspeed-integration-api-openapi.yml
+    spec: OpenAPI 3.1.0
+    servers:
+    - https://api.us.clearspeed.com/questionnaire
+    - https://api.uk.clearspeed.com/questionnaire
+    gated: false
+  graphql: null
+  mcp:
+    url: https://developer.clearspeed.com/mcp
+    gated: true
+    gate: OAuth 2.0 bearer (RFC 9728 protected resource); tools/list returns 401
+    backs: developer portal documentation, not the Integration API
+crosswalk: []
+mcp_only: []
+mcp_only_note: >-
+  Cannot be enumerated: the tool list is auth-gated and Clearspeed publishes no tool
+  inventory in the portal or in llms.txt. Re-run with an authenticated bearer token to
+  populate crosswalk[] and mcp_only[].
+rest_only:
+- capability: Participants
+  operations:
+  - id: null
+    method: POST
+    path: /v1/participant
+    summary: Create a participant against a questionnaire
+    note: no operationId declared in the spec
+  - id: null
+    method: PUT
+    path: /v1/participant/{participant_id}
+    summary: Update outcome tracking for a participant
+    note: no operationId declared in the spec
+- capability: API key management
+  operations:
+  - id: createApiKey
+    method: POST
+    path: /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys
+    summary: Create an API key for a questionnaire
+  - id: deleteApiKey
+    method: DELETE
+    path: /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}
+    summary: Delete an API key
+coverage:
+  tools_named: 0
+  tools_bound: 0
+  mcp_only: 0
+  rest_operations_total: 4
+  rest_operations_with_tool: 0
+  webhooks_total: 1
