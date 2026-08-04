@@ -7,7 +7,7 @@ authentication:
   style: api-key
   transport: header
   header: Authorization
-  format: raw key value (no Bearer prefix) — "Authorization: <your-api-key>"
+  format: 'raw key value (no Bearer prefix) — Authorization: <your-api-key>'
   scoping: >-
     Each key is bound to a single questionnaire. A key issued for questionnaire A is
     rejected for questionnaire B (403 "API Key not associated with this Questionnaire").

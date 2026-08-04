@@ -15,7 +15,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-02'
-modified: '2026-08-02'
+modified: '2026-08-04'
 tags:
 - Company
 - Risk Assessment
@@ -93,6 +93,10 @@ common:
   url: https://www.clearspeed.com/security-commitment
 - type: TrustCenter
   url: security/clearspeed-trust-center.yml
+- type: Security
+  url: https://compliance.clearspeed.com/
+- type: VulnerabilityDisclosure
+  url: security/clearspeed-vulnerability-disclosure.yml
 - type: OpenAPI
   url: openapi/clearspeed-integration-api-openapi.yml
 - type: MCPServer
@@ -129,3 +133,8 @@ common:
   url: security/clearspeed-domain-security.yml
 - type: AgenticAccess
   url: agentic-access/clearspeed-agentic-access.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v1

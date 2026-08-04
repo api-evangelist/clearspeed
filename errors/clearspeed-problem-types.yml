@@ -1,0 +1,163 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/clearspeed-integration-api-openapi.yml
+docs: https://developer.clearspeed.com/apis/public/integration-api
+api: Clearspeed Integration API
+format: proprietary
+rfc9457: false
+note: >-
+  Clearspeed does not use RFC 9457 problem+json. Every error is returned as
+  application/json with a proprietary envelope, and the Integration API carries TWO
+  different envelopes depending on which surface you called. There is no error `type`
+  URI, no documented error catalog page, and no machine-readable error code registry
+  beyond the four enum values on the participant surface. Everything below is derived
+  verbatim from the response schemas and response examples published in the OpenAPI.
+envelopes:
+- id: legacy-participant-envelope
+  applies_to:
+  - POST /v1/participant
+  - PUT /v1/participant/{participant_id}
+  schemas:
+  - LegacyErrorResponse
+  - OutcomeTrackingErrorResponse
+  content_type: application/json
+  fields:
+    error: machine-readable code
+    status: integer HTTP status, repeated in the body
+    message: human-readable detail
+    timestamp: 'string in dd-MM-yyyy HH:mm:ss form (example: 27-03-2026 12:34:56)'
+  codes:
+  - UNAUTHORIZED
+  - BAD_REQUEST
+  - NOT_FOUND
+  - FORBIDDEN
+  - INTERNAL_SERVER_ERROR
+  note: >-
+    INTERNAL_SERVER_ERROR is declared in the LegacyErrorResponse enum but no 5xx
+    response is declared on any operation, so it is undocumented at the operation level.
+    OutcomeTrackingErrorResponse omits INTERNAL_SERVER_ERROR from its enum.
+- id: apikey-envelope
+  applies_to:
+  - POST /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys
+  - DELETE /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}
+  schemas:
+  - ApiKeyErrorResponse
+  content_type: application/json
+  fields:
+    error: human-readable message string only
+  codes: []
+  note: >-
+    No code, no status field, no timestamp. Clients cannot branch on a stable machine
+    code for API-key errors — only on the HTTP status and on English message text.
+problems:
+- status: 400
+  code: BAD_REQUEST
+  envelope: legacy-participant-envelope
+  title: Bad request
+  source_operation: openapi/clearspeed-integration-api-openapi.yml#/paths/~1v1~1participant/post
+  messages:
+  - message: Invalid JSON format
+    cause: Request body is not parseable JSON
+  - message: project_uuid is required
+    cause: Missing required project_uuid on the Participant body
+  - message: IRN cannot be empty.
+    cause: Missing required interview_ref_num
+  - message: Invalid project_uuid format
+    cause: project_uuid is not a UUID
+  - message: Invalid participant_uuid format
+    cause: participant_uuid is not a UUID
+  - message: Invalid email format
+    cause: email failed validation
+  - message: 'Error: Duplicate IRN. IRN number <irn> has already been assigned to another
+      participant.'
+    cause: interview_ref_num is already in use on this questionnaire
+    remediation: >-
+      Treat this as the de-duplication signal on create. It is the closest thing
+      Clearspeed publishes to an idempotency contract, but it is a validation rule, not
+      a retry guarantee — a retried create returns 400, not the original 200 body.
+- status: 400
+  code: BAD_REQUEST
+  envelope: legacy-participant-envelope
+  title: Bad request (outcome tracking)
+  source_operation: openapi/clearspeed-integration-api-openapi.yml#/paths/~1v1~1participant~1{participant_id}/put
+  messages:
+  - message: Invalid JSON format
+  - message: Invalid participant_id format
+    cause: participant_id path parameter is not a UUID
+  - message: Invalid outcome_ts format. Use RFC3339 format (e.g., 2025-12-12T06:06:29Z)
+    cause: outcome_ts is not RFC 3339
+  - message: Failed to update outcome tracking
+    cause: Server-side failure applying the outcome update
+- status: 401
+  code: UNAUTHORIZED
+  envelope: legacy-participant-envelope
+  title: Missing or invalid API key
+  messages:
+  - message: API key is required
+    cause: No Authorization header on the request
+  - message: Invalid API key
+    cause: Key value does not exist, or has been deleted
+  remediation: >-
+    Send the raw key value in the Authorization header with no Bearer prefix. A deleted
+    key starts returning 401 immediately.
+- status: 403
+  code: FORBIDDEN
+  envelope: legacy-participant-envelope
+  title: API key not associated with this questionnaire
+  messages:
+  - message: API Key not associated with this Questionnaire
+    cause: >-
+      The key is scoped to a different questionnaire than the one named by project_uuid
+      in the body or by questionnaire_id in the path
+  remediation: Use a key issued for the target questionnaire; keys never span questionnaires.
+- status: 404
+  code: NOT_FOUND
+  envelope: legacy-participant-envelope
+  title: Resource not found
+  messages:
+  - message: Participant not found
+  - message: Project not found
+  - message: Questionnaire not found
+- status: 400
+  envelope: apikey-envelope
+  title: Invalid API key request
+  source_operation: openapi/clearspeed-integration-api-openapi.yml#createApiKey
+  messages:
+  - message: key_name is required and cannot be null or empty
+  - message: scope is required and cannot be null or empty
+    note: the request field is named `scopes` (plural); the error text says `scope`
+  - message: API key value is required
+    cause: apikey path parameter missing or empty on delete
+    source_operation: openapi/clearspeed-integration-api-openapi.yml#deleteApiKey
+- status: 401
+  envelope: apikey-envelope
+  title: Missing or invalid API key
+  messages:
+  - message: Authorization header is required
+  - message: Invalid API key
+- status: 403
+  envelope: apikey-envelope
+  title: Insufficient scope
+  messages:
+  - message: You are not authorized to perform this operation
+    cause: Calling key lacks apikey:write
+    source_operation: openapi/clearspeed-integration-api-openapi.yml#createApiKey
+  - message: Invalid API key scope
+    cause: Calling key lacks apikey:delete
+    source_operation: openapi/clearspeed-integration-api-openapi.yml#deleteApiKey
+- status: 404
+  envelope: apikey-envelope
+  title: API key not found
+  messages:
+  - message: API key not found or Invalid tenant for this questionnaire
+    source_operation: openapi/clearspeed-integration-api-openapi.yml#deleteApiKey
+gaps:
+- No 429 / rate-limit error is declared on any operation.
+- No 5xx response is declared on any operation, though INTERNAL_SERVER_ERROR exists in
+  the LegacyErrorResponse enum.
+- No published error-reference page on the developer portal; this catalog is derived
+  entirely from the OpenAPI response examples.
+- The two envelopes are mutually incompatible; a single client must branch on surface.
+cross_links:
+  conventions: conventions/clearspeed-conventions.yml
+  authentication: authentication/clearspeed-authentication.yml

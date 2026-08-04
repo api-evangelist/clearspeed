@@ -1,0 +1,48 @@
+generated: '2026-08-04'
+method: searched
+source: registry searches + https://developer.clearspeed.com/
+packages: []
+official_sdk_count: 0
+note: >-
+  Clearspeed publishes no first-party client libraries. Every public registry and the
+  developer portal were searched on 2026-08-04 and nothing first-party exists. The
+  documented integration path is raw HTTPS against the REST API plus a customer-hosted
+  webhook receiver. This is an honest empty result, not a gap in the search — no `SDKs`
+  pointer is emitted in apis.yml because there is no SDK to point at.
+registries_searched:
+- {registry: npm, query: clearspeed, results: 0, url: 'https://www.npmjs.com/search?q=clearspeed'}
+- {registry: pypi, queries: [clearspeed, clearspeed-api, clearspeed-sdk], results: 0,
+  http_status: 404}
+- {registry: rubygems, query: clearspeed, results: 0}
+- {registry: packagist, query: clearspeed, results: 0, note: only an unrelated Magento
+    package matched}
+- {registry: crates.io, query: clearspeed, results: 0}
+- {registry: nuget, query: clearspeed, results: 0}
+- {registry: pkg.go.dev, query: clearspeed, results: 0}
+- {registry: maven-central, query: clearspeed, results: 0}
+source_control:
+  github_org: null
+  note: >-
+    https://api.github.com/orgs/clearspeed returns 404 and a GitHub name search for
+    "clearspeed" returns 0 repositories. Clearspeed maintains no public GitHub
+    organization, so there is no source-code, sample-code or SDK surface to catalogue.
+docs_surface:
+  sdk_page: null
+  sample_code: >-
+    The developer portal renders language snippets through the Redocly try-it/code-sample
+    widget on the API reference page. These are generated request samples, not a
+    distributed client library.
+  postman: null
+  postman_note: No public Postman collection or workspace was found.
+third_party:
+- name: Greenhouse
+  kind: platform integration (not an SDK)
+  url: https://support.greenhouse.io/hc/en-us/articles/360051983671-Clearspeed-integration
+  official: false
+  note: >-
+    Greenhouse documents a Clearspeed integration for candidate screening. It is a
+    partner-side integration, not a Clearspeed-published client library.
+x-evidence:
+  fetched: '2026-08-04'
+  registries_probed: 8
+  packages_found: 0

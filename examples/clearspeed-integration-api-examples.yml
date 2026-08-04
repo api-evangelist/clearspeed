@@ -1,0 +1,184 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/clearspeed-integration-api-openapi.yml
+api: Clearspeed Integration API
+note: >-
+  Every example below is lifted verbatim from the `examples` blocks published in
+  Clearspeed's own OpenAPI. Nothing is invented. The spec is unusually example-rich for
+  its size — 4 operations and 1 webhook carry 34 named examples — which is the strongest
+  part of this contract. Values shown as x/X/w placeholders are Clearspeed's own
+  redactions, kept as published.
+coverage:
+  operations_total: 4
+  operations_with_request_examples: 3
+  operations_with_response_examples: 4
+  webhooks_with_examples: 1
+  named_examples_total: 34
+requests:
+- operation: POST /v1/participant
+  name: create
+  summary: Create new participant
+  value:
+    project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+    phone_number1: '+916263877039'
+    phone_number2: ''
+    interview_ref_num: '7858934895810'
+    external_ref_id: 12345-46b5-464d-a8e4-afecc
+    email: participant@gmail.com
+    language: English
+- operation: PUT /v1/participant/{participant_id}
+  name: updateOutcome
+  summary: Update participant outcome
+  value:
+    outcome: $10,Reviewed and Mitigated
+    outcome_ts: '2025-12-12T06:06:29Z'
+- operation: POST /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys
+  operationId: createApiKey
+  name: participantWriter
+  summary: Key for creating participants
+  value:
+    key_name: ci-participant-writer
+    scopes:
+    - participant:write
+- operation: POST /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys
+  operationId: createApiKey
+  name: fullAccess
+  summary: Key with all participant and key management scopes
+  value:
+    key_name: admin-key
+    scopes:
+    - participant:write
+    - apikey:write
+    - apikey:delete
+responses:
+- operation: POST /v1/participant
+  status: 200
+  name: createParticipant
+  summary: Create participant response
+  value:
+    project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+    phone_number1: '+916263877039'
+    phone_number2: ''
+    interview_ref_num: '7858934895810'
+    external_ref_id: 12345-46b5-464d-a8e4-afecc
+    participant_uuid: 01977df0-57c1-7dcf-8916-df741aa66691
+    email: participant@gmail.com
+    language: English
+    particpant_guide_link: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+    is_participant_allowed: true
+    outcome: null
+    outcome_ts: null
+- operation: POST /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys
+  operationId: createApiKey
+  status: 201
+  name: created
+  summary: Newly created key (full value visible)
+  value:
+    id: a1b2c3d4-0000-0000-0000-000000000001
+    api_key: REDACTED_EXAMPLE_API_KEY
+    key_name: ci-participant-writer
+    scopes:
+    - participant:write
+    questionnaire_id: fd9690b0-9050-4acd-ad74-7f906c07fe93
+    create_ts: '2026-04-10T10:00:00Z'
+    update_ts: '2026-04-10T10:00:00Z'
+  note: >-
+    The published example value is a placeholder of the form cs_live_ followed by x
+    characters. It is redacted here to avoid a secret-shaped literal; see the spec for
+    the published form.
+- operation: DELETE /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}
+  operationId: deleteApiKey
+  status: 204
+  summary: API key deleted successfully
+  value: null
+error_examples:
+- {operation: POST /v1/participant, status: 400, name: badRequest, message: Invalid JSON
+    format}
+- {operation: POST /v1/participant, status: 400, name: projectUUIDRequired, message: project_uuid
+    is required}
+- {operation: POST /v1/participant, status: 400, name: irnCannotBeEmpty, message: IRN
+    cannot be empty.}
+- {operation: POST /v1/participant, status: 400, name: invalidProjectUUIDFormat, message: Invalid
+    project_uuid format}
+- {operation: POST /v1/participant, status: 400, name: invalidParticipantUUIDFormat,
+  message: Invalid participant_uuid format}
+- {operation: POST /v1/participant, status: 400, name: invalidEmailFormat, message: Invalid
+    email format}
+- {operation: POST /v1/participant, status: 400, name: duplicateIRN, message: 'Error:
+    Duplicate IRN. IRN number 7858934895810 has already been assigned to another participant.'}
+- {operation: POST /v1/participant, status: 401, name: unauthorized, message: API key
+    is required}
+- {operation: POST /v1/participant, status: 401, name: invalidAPIKey, message: Invalid
+    API key}
+- {operation: POST /v1/participant, status: 403, name: forbidden, message: API Key not
+    associated with this Questionnaire}
+- {operation: POST /v1/participant, status: 404, name: notFound, message: Participant
+    not found}
+- {operation: POST /v1/participant, status: 404, name: projectNotFound, message: Project
+    not found}
+- {operation: 'PUT /v1/participant/{participant_id}', status: 400, name: invalidParticipantIdFormat,
+  message: Invalid participant_id format}
+- {operation: 'PUT /v1/participant/{participant_id}', status: 400, name: invalidOutcomeTsFormat,
+  message: 'Invalid outcome_ts format. Use RFC3339 format (e.g., 2025-12-12T06:06:29Z)'}
+- {operation: 'PUT /v1/participant/{participant_id}', status: 400, name: failedToUpdateOutcomeTracking,
+  message: Failed to update outcome tracking}
+- {operation: 'PUT /v1/participant/{participant_id}', status: 404, name: questionnaireNotFound,
+  message: Questionnaire not found}
+- {operation: createApiKey, status: 400, name: missingKeyName, error: key_name is required
+    and cannot be null or empty}
+- {operation: createApiKey, status: 400, name: missingScope, error: scope is required
+    and cannot be null or empty}
+- {operation: createApiKey, status: 401, name: unauthorized, error: Authorization header
+    is required}
+- {operation: createApiKey, status: 403, name: forbidden, error: You are not authorized
+    to perform this operation}
+- {operation: deleteApiKey, status: 400, name: missingKeyId, error: API key value is
+    required}
+- {operation: deleteApiKey, status: 401, name: invalidKey, error: Invalid API key}
+- {operation: deleteApiKey, status: 403, name: insufficientScope, error: Invalid API key
+    scope}
+- {operation: deleteApiKey, status: 404, name: notFound, error: API key not found or
+    Invalid tenant for this questionnaire}
+webhook_examples:
+  webhook: result_update
+  named:
+  - Overall evaluation with AR
+  - Attempted - Incomplete
+  - Attempted - Partial
+  - Overall evaluation with HR
+  - Overall evaluation with LR
+  - Overall evaluation with G
+  - Overall evaluation with LR/AD
+  - Overall evaluation with Precision R/G -> G
+  - Overall evaluation with Precision R/G -> R
+  - Under_Review
+  representative:
+    project_uuid: XXXXXXXX-ef1f-4d91-a2e2-7b33132b00f1
+    callback_type: Result Update
+    access_code: 7136XXXX59
+    interview_ref_num: 456XXXX642
+    status: Result Published
+    questions_risk_rating:
+    - {sequence: '7', risk_level: LR, text: 'Q7 '}
+    - {sequence: '2', risk_level: HR, text: 'Q2 '}
+    overall_evaluation: HR
+    is_admission: false
+    is_counter_measure: false
+    is_not_complete: false
+    participant_language: English
+    summary: AR
+    summary_bgcolor: '#dc3545'
+    clear: true
+  note: >-
+    The published examples are internally inconsistent — "Overall evaluation with LR"
+    carries summary: AR, and "Precision R/G -> R" carries overall_evaluation: R with
+    summary: G and clear: true. Recorded as published; do not treat summary as derivable
+    from overall_evaluation.
+gaps:
+- No example carries a 5xx response.
+- No test/sandbox values are published, so none of these examples are runnable against a
+  test environment (see lifecycle/clearspeed-lifecycle.yml — no sandbox exists).
+cross_links:
+  openapi: openapi/clearspeed-integration-api-openapi.yml
+  errors: errors/clearspeed-problem-types.yml
+  webhooks: asyncapi/clearspeed-webhooks.yml

@@ -1,15 +1,101 @@
-generated: '2026-08-02'
-method: derived
-source: openapi/clearspeed-integration-api-openapi.yml
+generated: '2026-08-04'
+method: searched
+source: https://developer.clearspeed.com/api-keys
+derived_from: openapi/clearspeed-integration-api-openapi.yml
+docs: https://developer.clearspeed.com/api-keys
+api: Clearspeed Integration API
 summary:
   types:
   - apiKey
   api_key_in:
   - header
+  oauth2_flows: []
+  oidc: false
+  mutual_tls: false
 schemes:
 - name: authorization
   type: apiKey
   in: header
   parameter: Authorization
+  format: 'raw key value, no Bearer prefix — Authorization: <your-api-key>'
+  applied_to: 'all 4 operations (each declares security: [{authorization: []}])'
   sources:
   - openapi/clearspeed-integration-api-openapi.yml
+scoping:
+  unit: questionnaire
+  detail: >-
+    A key is bound to exactly one questionnaire. It is validated against the questionnaire
+    named by `project_uuid` in the participant request body, or by `questionnaire_id` in
+    the API-key management path. Cross-questionnaire use returns 403 "API Key not
+    associated with this Questionnaire".
+scopes:
+- {scope: 'participant:write', allows: Create participants; update participant outcome,
+  in_spec_enum: true}
+- {scope: 'participant:read', allows: Read participant data, in_spec_enum: false, note: documented
+    on the portal but not enumerated in ApiKeyCreateRequest, and no read operation exists
+    in the published contract}
+- {scope: 'participant:delete', allows: Delete participants, in_spec_enum: false, note: documented
+    on the portal but not enumerated in ApiKeyCreateRequest, and no delete-participant
+    operation exists in the published contract}
+- {scope: 'apikey:write', allows: Create new API keys for the same questionnaire, in_spec_enum: true}
+- {scope: 'apikey:delete', allows: Delete API keys for the same questionnaire, in_spec_enum: true}
+scopes_note: >-
+  These are API-key permissions, not OAuth scopes — there is no oauth2 securityScheme on
+  the Integration API, so no scopes/ artifact is emitted. Two portal-documented scopes
+  (participant:read, participant:delete) have no corresponding operation in the published
+  OpenAPI, which means either the contract is incomplete or those scopes govern an
+  unpublished surface.
+key_lifecycle:
+  bootstrap: >-
+    The first key for a questionnaire must be created in the Clearspeed web app by a
+    questionnaire or tenant Admin (Integration page -> API Keys -> + Generate New).
+    Subsequent keys can be minted via createApiKey with the apikey:write scope.
+  visibility: >-
+    The full api_key value is returned only in the 201 response to createApiKey. There is
+    no list or read operation, so an unrecorded key value is unrecoverable — and delete
+    addresses the key by its raw value, so losing it also loses the ability to revoke it
+    through the API.
+  rotation: >-
+    Documented zero-downtime rotation: create a replacement with the same scopes, switch
+    the integration, verify, then delete the old key.
+  revocation: Immediate. A deleted key returns 401 on the next request.
+  expiry: none documented
+  format: >-
+    Not specified in the docs. The OpenAPI create example shows a cs_live_ prefixed
+    placeholder; the delete example uses a bare 64-character hex value. The prefix is
+    therefore not guaranteed.
+outbound_authentication:
+  context: Clearspeed calling the customer's webhook endpoint
+  methods:
+  - {method: api-key, detail: 'Clearspeed sends a customer-supplied key value as a header
+      on every delivery'}
+  - {method: oauth2-client-credentials, detail: 'Clearspeed performs the client credentials
+      flow against a customer-supplied Token URL (Audience, Client ID, Client Secret)
+      before each delivery and sends an Authorization Bearer token'}
+  signature_verification: none
+  docs: https://developer.clearspeed.com/webhooks
+  note: >-
+    This is Clearspeed acting as an OAuth CLIENT against the customer. It is not
+    authentication to the Clearspeed API and does not make the Integration API an OAuth API.
+other_auth_surfaces:
+- surface: developer portal MCP server
+  url: https://developer.clearspeed.com/mcp
+  scheme: OAuth 2.1 bearer (RFC 9728 protected resource)
+  issuer: https://auth.cloud.redocly.com
+  note: >-
+    Redocly Reunite portal identity protecting the documentation MCP server. Unrelated to
+    Integration API authentication. See mcp/clearspeed-mcp.yml.
+gaps:
+- No IP allowlisting documented.
+- No mTLS option.
+- No key expiry or last-used telemetry.
+- No list-keys operation, so key inventory must be maintained client-side.
+- No rate limits tied to a key.
+x-evidence:
+  fetched: '2026-08-04'
+  sources:
+  - {url: 'https://developer.clearspeed.com/api-keys', http_status: 200}
+  - {url: 'https://developer.clearspeed.com/webhooks', http_status: 200}
+cross_links:
+  conventions: conventions/clearspeed-conventions.yml
+  errors: errors/clearspeed-problem-types.yml

@@ -1,0 +1,146 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/clearspeed-integration-api-openapi.yml
+docs: https://developer.clearspeed.com/apis/public/integration-api
+api: Clearspeed Integration API
+note: >-
+  Derived from the OpenAPI component schemas and the id-reference fields carried across
+  request bodies, responses, path parameters and the result webhook payload. Clearspeed
+  publishes no object reference page, so entity boundaries below are inferred from the
+  identifiers that actually appear on the wire. Tenant and Questionnaire are never
+  returned as objects — they exist only as path parameters and foreign keys, so they are
+  recorded as implied entities.
+entities:
+- name: Tenant
+  implied: true
+  id_field: tenant_id
+  id_format: uuid
+  exposed_as: path parameter only
+  schemas: []
+  note: >-
+    Never returned as a resource. Appears only in the API-key management path. Owns
+    questionnaires; an API key is rejected when its questionnaire does not belong to the
+    tenant in the path (404 "Invalid tenant for this questionnaire").
+- name: Questionnaire
+  implied: true
+  aliases:
+  - project
+  id_field: questionnaire_id
+  alternate_id_field: project_uuid
+  id_format: uuid
+  exposed_as: path parameter and request/response field
+  schemas: []
+  note: >-
+    The same entity is called `questionnaire_id` on the API-key surface and
+    `project_uuid` on the participant surface and in the webhook payload. This naming
+    split is the single biggest modelling inconsistency in the contract.
+- name: Participant
+  id_field: participant_uuid
+  alternate_id_field: participant_id
+  id_format: uuid
+  schemas:
+  - Participant
+  - LegacyParticipantResponse
+  - OutcomeTrackingResponse
+  fields:
+    project_uuid: {type: string, format: uuid, required: true, ref: Questionnaire}
+    interview_ref_num: {type: string, required: true, unique: true, note: 'customer-owned
+        unique reference (IRN); duplicate values are rejected with 400'}
+    external_ref_id: {type: string, required: false, note: customer-owned correlation
+        field}
+    phone_number1: {type: string, required: false}
+    phone_number2: {type: string, required: false}
+    email: {type: string, required: false}
+    language: {type: string, required: false}
+    participant_uuid: {type: string, format: uuid, response_only: true}
+    particpant_guide_link: {type: string, response_only: true, note: 'field name is
+        misspelled in the contract (particpant, not participant)'}
+    is_participant_allowed: {type: boolean, response_only: true, note: result of call-blocking
+        checks}
+    outcome: {type: [string, 'null'], note: outcome-tracking code set by the customer}
+    outcome_ts: {type: [string, 'null'], format: date-time}
+  operations:
+  - {method: POST, path: /v1/participant, action: create, operationId: null}
+  - {method: PUT, path: '/v1/participant/{participant_id}', action: update-outcome, operationId: null}
+- name: ApiKey
+  id_field: id
+  id_format: uuid
+  secret_field: api_key
+  schemas:
+  - ApiKey
+  - ApiKeyCreateRequest
+  fields:
+    id: {type: string, format: uuid}
+    api_key: {type: string, note: full value returned only on creation; masked afterwards}
+    key_name: {type: string, required: true}
+    scopes: {type: array, required: true, enum: [participant:write, apikey:write, apikey:delete]}
+    questionnaire_id: {type: string, format: uuid, ref: Questionnaire}
+    create_ts: {type: string, format: date-time}
+    update_ts: {type: string, format: date-time}
+  operations:
+  - method: POST
+    path: '/tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys'
+    action: create
+    operationId: createApiKey
+  - method: DELETE
+    path: '/tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}'
+    action: delete
+    operationId: deleteApiKey
+  note: >-
+    Delete addresses the key by its raw api_key value in the path, not by `id`. There is
+    no list operation, so `id` is only ever observed in the create response.
+- name: Result
+  delivery: webhook only
+  schemas:
+  - ResultWebhookRequest
+  id_fields:
+  - project_uuid
+  - interview_ref_num
+  - access_code
+  fields:
+    callback_type: {type: string, observed: [Result Update]}
+    status: {type: string, observed: [Result Published, 'Attempted - Incomplete', 'Attempted
+          - Partial', under_review]}
+    overall_evaluation: {type: string, observed: [HR, LR, G, R, NC, DC]}
+    questions_risk_rating: {type: array, items: {sequence: string, risk_level: string,
+        text: string, note: string}}
+    is_admission: {type: boolean}
+    is_counter_measure: {type: boolean}
+    is_not_complete: {type: boolean}
+    participant_language: {type: string}
+    summary: {type: string, note: 'result summary label, e.g. HR/LR/G/AR/NC'}
+    summary_bgcolor: {type: string, note: hex colour paired with the summary label}
+    clear: {type: boolean}
+    timestamp: {type: string, format: date-time}
+  note: >-
+    There is no GET for a Result. The only way to obtain an assessment outcome is the
+    inbound webhook. The Result is correlated back to a Participant by
+    interview_ref_num (and project_uuid), NOT by participant_uuid — participant_uuid
+    never appears in the webhook payload.
+relationships:
+- {from: Tenant, to: Questionnaire, type: has_many, via: tenant_id, confidence: high}
+- {from: Questionnaire, to: Participant, type: has_many, via: project_uuid, confidence: high}
+- {from: Questionnaire, to: ApiKey, type: has_many, via: questionnaire_id, confidence: high}
+- {from: Participant, to: Questionnaire, type: belongs_to, via: project_uuid, confidence: high}
+- {from: ApiKey, to: Questionnaire, type: belongs_to, via: questionnaire_id, confidence: high}
+- {from: Participant, to: Result, type: has_many, via: interview_ref_num, confidence: medium,
+  note: 'correlation is by customer reference number, not by participant_uuid; a
+    re-assessment produces another Result Update callback against the same IRN'}
+- {from: Result, to: Questionnaire, type: belongs_to, via: project_uuid, confidence: high}
+identifier_conventions:
+- {field: participant_uuid, format: UUIDv7 observed in examples, prefix: none}
+- {field: project_uuid, format: UUIDv4, prefix: none}
+- {field: api_key, format: opaque string, prefix: 'cs_live_ appears in the OpenAPI
+    example; the delete example uses a bare 64-character hex value, so the prefix is not
+    guaranteed'}
+- {field: interview_ref_num, format: customer-defined string, prefix: none, unique: true}
+gaps:
+- No list/read operations for any entity — the model is write-and-callback only.
+- No GET for Participant, so participant_uuid can only be captured from the create response.
+- No Result resource is addressable; results exist only as webhook deliveries.
+- Questionnaire is named two different ways (questionnaire_id vs project_uuid).
+render: null
+cross_links:
+  errors: errors/clearspeed-problem-types.yml
+  webhooks: asyncapi/clearspeed-webhooks.yml
+  conventions: conventions/clearspeed-conventions.yml

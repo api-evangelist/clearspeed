@@ -1,0 +1,75 @@
+generated: '2026-08-04'
+method: searched
+source: https://developer.clearspeed.com/ + openapi/clearspeed-integration-api-openapi.yml
+api: Clearspeed Integration API
+versioning:
+  scheme: uri-path
+  current: v1
+  consistent: false
+  note: >-
+    Participant operations sit under /v1/. API-key management sits under an unversioned
+    /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys path, so the two
+    surfaces version differently. No version header, no dated version train, no
+    media-type versioning.
+  spec_version_field: >-
+    info.version in the published OpenAPI is an EMPTY STRING. The contract carries no
+    document version at all, so consumers cannot detect that the spec has changed.
+  docs: https://developer.clearspeed.com/apis/public/integration-api
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no notice period, and no Sunset/Deprecation header support is
+    documented anywhere on developer.clearspeed.com. The "Legacy" naming in the schemas
+    (LegacyParticipantResponse, LegacyErrorResponse) signals that a prior generation of
+    the participant surface exists, but no migration guide or retirement date is published.
+deprecated_operations: []
+deprecated_operations_note: >-
+  No operation, parameter, or schema in the OpenAPI carries `deprecated: true`.
+status_page: null
+status_page_note: >-
+  No status or uptime page was found. Probed https://status.clearspeed.com/ (no DNS/TLS
+  resolution) and searched the marketing sitemap and the developer portal navigation on
+  2026-08-04 — Clearspeed publishes no public status page, no incident history, and no
+  uptime dashboard.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA. Availability commitments, if any, are presumably in the enterprise
+    contract; nothing is published.
+changelog:
+  url: null
+  published: false
+  note: >-
+    No changelog or release-notes page exists on the developer portal (probed
+    /changelog -> 404; portal navigation is Getting Started, API Keys & Authentication,
+    Webhook Configuration, WhatsApp Integration, Integration APIs). Pages carry only a
+    relative "Last updated N months ago" stamp, which is not a dated change record.
+maturity:
+  stage: production
+  regions:
+  - {region: US, base_url: 'https://api.us.clearspeed.com/questionnaire'}
+  - {region: UK, base_url: 'https://api.uk.clearspeed.com/questionnaire'}
+  note: >-
+    Both hosts are labelled "Production" in the OpenAPI servers block. No sandbox,
+    staging, or test environment is published.
+gaps:
+- info.version is empty — no way to pin or diff the contract.
+- Two versioning schemes on one API (/v1/ vs unversioned).
+- No deprecation policy and no Sunset header support.
+- No status page, no incident history, no SLA.
+- No changelog.
+cross_links:
+  conventions: conventions/clearspeed-conventions.yml
+  conformance: conformance/clearspeed-conformance.yml
+x-evidence:
+  fetched: '2026-08-04'
+  probes:
+  - {url: 'https://status.clearspeed.com/', http_status: null, result: no resolution}
+  - {url: 'https://developer.clearspeed.com/changelog', http_status: 404}
+  - {url: 'https://www.clearspeed.com/sitemap.xml', http_status: 200, result: no status
+      or changelog page listed}

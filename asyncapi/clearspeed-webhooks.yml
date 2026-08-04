@@ -1,0 +1,128 @@
+generated: '2026-08-04'
+method: searched
+source: https://developer.clearspeed.com/webhooks
+derived_from: openapi/clearspeed-integration-api-openapi.yml#/webhooks
+api: Clearspeed Integration API
+spec_type: none
+asyncapi_published: false
+asyncapi_note: >-
+  Clearspeed publishes no AsyncAPI document. Its event surface is declared inline in the
+  OpenAPI 3.1 `webhooks` block (one entry, `result_update`) and documented on the portal
+  webhook-configuration page. This artifact captures that webhook catalog verbatim; no
+  AsyncAPI document is fabricated here.
+direction: Clearspeed -> customer endpoint
+transport: HTTPS POST
+content_type: application/json
+endpoint:
+  configured_by: customer
+  where: Clearspeed web app, per questionnaire, Integration page
+  example_in_spec: https://www.customerapi.com/v1
+  note: One webhook endpoint per questionnaire; there is no API to register it.
+webhooks:
+- name: result_update
+  spec_ref: openapi/clearspeed-integration-api-openapi.yml#/webhooks/result_update
+  summary: Result Update Webhook
+  description: >-
+    Clearspeed POSTs this payload to the customer endpoint when an assessment result is
+    published or updated. This is the ONLY way to obtain an assessment outcome — the
+    Integration API exposes no result read operation and no polling endpoint.
+  schema: ResultWebhookRequest
+  callback_type_values:
+  - Result Update
+  status_values:
+  - Result Published
+  - Attempted - Incomplete
+  - Attempted - Partial
+  - under_review
+  correlation_fields:
+  - project_uuid
+  - interview_ref_num
+  - access_code
+  payload_fields:
+    project_uuid: UUID of the questionnaire/project
+    callback_type: event kind; only "Result Update" is documented
+    access_code: participant access code
+    interview_ref_num: customer-owned unique reference (IRN) — the correlation key
+    status: delivery/assessment state
+    questions_risk_rating: array of {sequence, risk_level, text, note} per question
+    overall_evaluation: aggregate risk evaluation
+    is_admission: boolean
+    is_counter_measure: boolean
+    is_not_complete: boolean
+    participant_language: language the assessment was taken in
+    summary: result summary label
+    summary_bgcolor: hex colour paired with the summary label
+    clear: boolean, whether the result is clear
+    timestamp: RFC 3339 timestamp (present in some published examples, absent in others)
+  risk_level_values_observed:
+  - HR
+  - LR
+  - G
+  - R
+  - NC
+  - DC
+  - AD
+  - ''
+  overall_evaluation_values_observed:
+  - HR
+  - LR
+  - G
+  - R
+  - NC
+  - DC
+  summary_values_observed:
+  - HR
+  - LR
+  - G
+  - AR
+  - NC
+  values_note: >-
+    Clearspeed publishes no enum for risk_level, overall_evaluation, status, summary or
+    callback_type. Every value listed above was observed in the published response
+    examples in the OpenAPI and on the webhook docs page; the lists are therefore
+    evidence, not a closed vocabulary.
+delivery_contract:
+  ack: Customer endpoint must return HTTP 200. Any other status, or a timeout, is a failure.
+  automatic_retry: false
+  manual_retry: >-
+    Failed payloads are retained 15 days. A "Retry Webhook" control on the questionnaire
+    Integration page replays all failures from the past 15 days to the currently
+    configured endpoint. Failures older than 15 days cannot be retried.
+  retention_days: 15
+  ordering: not documented
+  at_least_once: >-
+    Not guaranteed and not documented. Re-delivery only happens on an operator-triggered
+    retry, so the customer endpoint should still de-duplicate on interview_ref_num.
+  signature_verification: none
+  signature_note: >-
+    No HMAC signature header, no shared-secret signing, and no timestamp/replay defence
+    is documented. Authenticity rests entirely on the outbound credential Clearspeed
+    presents (below) and on TLS.
+  ip_allowlist: not documented
+authentication_to_customer:
+- method: api-key
+  detail: >-
+    Clearspeed sends a customer-supplied key value as a header on every delivery. Header
+    name and value are configured by the customer.
+- method: oauth2-client-credentials
+  detail: >-
+    Clearspeed performs the client credentials flow against a customer-supplied Token
+    URL (with Audience, Client ID and Client Secret) before each delivery and sends
+    "Authorization: Bearer <token>".
+gaps:
+- No AsyncAPI document is published.
+- Only one event type exists; there are no participant-lifecycle, questionnaire or
+  api-key events.
+- No event catalog page, no event versioning, no schema registry.
+- No signature verification means the receiver cannot cryptographically attribute a
+  delivery to Clearspeed.
+- No subscription API — endpoints are configured in the web app only.
+cross_links:
+  data_model: data-model/clearspeed-data-model.yml
+  conventions: conventions/clearspeed-conventions.yml
+  openapi: openapi/clearspeed-integration-api-openapi.yml
+x-evidence:
+  fetched: '2026-08-04'
+  sources:
+  - {url: 'https://developer.clearspeed.com/webhooks', http_status: 200}
+  - {url: 'openapi/clearspeed-integration-api-openapi.yml', ref: '#/webhooks/result_update'}

@@ -1,0 +1,105 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Clearspeed Integration API
+  version: 1.0.0
+x-generated: '2026-08-04'
+x-method: generated
+x-source: openapi/clearspeed-integration-api-openapi.yml
+x-note: >-
+  Non-destructive enhancements API Evangelist would apply to the published Clearspeed
+  contract. The harvested spec at openapi/_original/ is never mutated. Everything here is
+  either (a) metadata about our own analysis, or (b) a defect the published spec has that
+  can be corrected without inventing behaviour: an empty info.version, two empty-string
+  tags, untagged operations, and two operations with no operationId. Nothing here asserts
+  behaviour Clearspeed does not document.
+extends: openapi/clearspeed-integration-api-openapi.yml
+actions:
+- target: $.info
+  description: Record the API Evangelist artifact set and flag the empty version string.
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/clearspeed-authentication.yml
+      conventions: conventions/clearspeed-conventions.yml
+      errors: errors/clearspeed-problem-types.yml
+      data_model: data-model/clearspeed-data-model.yml
+      examples: examples/clearspeed-integration-api-examples.yml
+      lifecycle: lifecycle/clearspeed-lifecycle.yml
+      conformance: conformance/clearspeed-conformance.yml
+      webhooks: asyncapi/clearspeed-webhooks.yml
+      skills: skills/_index.yml
+    x-apievangelist-defects:
+    - 'info.version is an empty string — consumers cannot pin or diff the contract'
+    - 'tags[] contains two entries whose name is an empty string'
+    - 'every operation is tagged with the empty-string tag'
+    - 'the two participant operations declare no operationId'
+    - 'field particpant_guide_link is misspelled in three response schemas'
+    - 'the questionnaire is called project_uuid on one surface and questionnaire_id on
+      the other'
+    - 'no 429 and no 5xx responses are declared on any operation'
+- target: $.tags
+  description: Replace the two empty-string tags with the real capability groupings.
+  update:
+  - name: Participants
+    description: Create participants against a questionnaire and record outcome tracking.
+  - name: API Keys
+    description: Create and delete questionnaire-scoped API keys.
+- target: $.paths['/v1/participant'].post
+  description: Name and group the create-participant operation.
+  update:
+    operationId: createParticipant
+    tags:
+    - Participants
+    x-apievangelist-note: >-
+      Creates a participant and returns participant_uuid plus the participant guide link.
+      A repeat call with an interview_ref_num already in use returns 400 Duplicate IRN;
+      this is a uniqueness constraint, not an idempotency guarantee.
+- target: $.paths['/v1/participant/{participant_id}'].put
+  description: Name and group the outcome-tracking operation.
+  update:
+    operationId: updateParticipantOutcome
+    tags:
+    - Participants
+- target: $.paths['/tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys'].post
+  description: Group the key-creation operation and record its required scope.
+  update:
+    tags:
+    - API Keys
+    x-apievangelist-required-scope: apikey:write
+- target: $.paths['/tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}'].delete
+  description: Group the key-deletion operation and record its required scope.
+  update:
+    tags:
+    - API Keys
+    x-apievangelist-required-scope: apikey:delete
+- target: $.components.securitySchemes.authorization
+  description: Document the exact header form and the questionnaire scoping of the key.
+  update:
+    description: >-
+      Questionnaire-scoped API key sent as the raw value of the Authorization header with
+      no Bearer prefix. Keys carry explicit scopes (participant:write, participant:read,
+      participant:delete, apikey:write, apikey:delete) and are rejected with 403 when used
+      against a questionnaire they were not issued for. The first key for a questionnaire
+      must be created by an Admin in the Clearspeed web application.
+    x-apievangelist-scopes:
+    - participant:write
+    - participant:read
+    - participant:delete
+    - apikey:write
+    - apikey:delete
+    x-apievangelist-docs: https://developer.clearspeed.com/api-keys
+- target: $.webhooks.result_update.post
+  description: Record the delivery contract documented on the portal but absent from the spec.
+  update:
+    operationId: resultUpdateWebhook
+    tags:
+    - Participants
+    x-apievangelist-delivery:
+      ack: customer endpoint must return HTTP 200
+      automatic_retry: false
+      manual_retry_window_days: 15
+      signature_verification: none
+      correlation_key: interview_ref_num
+      auth_to_customer:
+      - api-key
+      - oauth2-client-credentials
+      docs: https://developer.clearspeed.com/webhooks

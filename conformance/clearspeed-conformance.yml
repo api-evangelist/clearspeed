@@ -1,0 +1,114 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/clearspeed-integration-api-openapi.yml + https://compliance.clearspeed.com/
+api: Clearspeed Integration API
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: 'openapi: 3.1.0 declared; document parses and carries paths, components,
+    securitySchemes and a webhooks block'
+- id: openapi-webhooks
+  conforms: true
+  evidence: OpenAPI 3.1 top-level `webhooks` object declares result_update
+- id: asyncapi
+  conforms: false
+  evidence: no AsyncAPI document published; the event surface is declared only in the
+    OpenAPI webhooks block
+- id: oauth2
+  conforms: false
+  evidence: >-
+    The Integration API has no oauth2 securityScheme — the only scheme is an apiKey in
+    the Authorization header. OAuth2 appears twice elsewhere and neither is the API:
+    (1) the Redocly developer-portal MCP server is protected by OAuth 2.1, and (2)
+    Clearspeed can act as an OAuth client-credentials CLIENT when calling a customer's
+    webhook endpoint.
+- id: oidc
+  conforms: false
+  evidence: no openIdConnect securityScheme; no /.well-known/openid-configuration on any
+    Clearspeed host
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    errors are application/json with two proprietary envelopes
+    (LegacyErrorResponse/OutcomeTrackingErrorResponse and ApiKeyErrorResponse); no
+    application/problem+json, no type URI
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on all four Clearspeed hosts
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation header support and no deprecation policy published
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  scope: developer portal only
+  evidence: well-known/clearspeed-oauth-authorization-server.json (200 on
+    developer.clearspeed.com); issued by Redocly Reunite, not by Clearspeed
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  scope: developer portal MCP server only
+  evidence: well-known/clearspeed-oauth-protected-resource-mcp.json (200)
+- id: mcp
+  conforms: true
+  scope: documentation server only
+  evidence: >-
+    https://developer.clearspeed.com/mcp answers JSON-RPC with an RFC 9728 OAuth
+    challenge (401). It is a Redocly Reunite documentation MCP server; it does not front
+    the Integration API. See mcp/clearspeed-tool-crosswalk.yml.
+- id: a2a
+  conforms: false
+  evidence: no agent card at /.well-known/agent-card.json or /.well-known/agent.json on
+    any host
+- id: json-api
+  conforms: false
+  evidence: plain JSON resources; no JSON:API media type or document structure
+- id: odata
+  conforms: false
+- id: scim2
+  conforms: false
+- id: fhir
+  conforms: false
+- id: fapi
+  conforms: false
+- id: psd2
+  conforms: false
+- id: pagination
+  conforms: false
+  evidence: no collection or list operations exist, so no pagination contract is needed
+    or offered
+- id: idempotency
+  conforms: false
+  evidence: >-
+    no Idempotency-Key header or parameter anywhere in the spec or docs; the only
+    de-duplication mechanism is a server-side uniqueness constraint on interview_ref_num
+    that returns 400 on repeat, which is a validation rule rather than a retry guarantee
+- id: rate-limit-headers
+  conforms: false
+  evidence: no RateLimit/Retry-After headers and no 429 response declared
+- id: llms-txt
+  conforms: true
+  evidence: 'https://www.clearspeed.com/llms.txt returns 200; saved at
+    llms/clearspeed-llms.txt'
+compliance_program:
+  published: true
+  trust_center: https://compliance.clearspeed.com/
+  marketing_page: https://www.clearspeed.com/security-commitment
+  certified:
+  - {name: SOC 2 Type 2, auditor: Schellman, year: 2025}
+  - {name: 'ISO 27001:2022'}
+  - {name: UK Cyber Essentials}
+  aligned:
+  - ISO 27701:2019
+  - GDPR
+  - CCPA
+  - HIPAA
+  - NIST 800-53
+  - NIST 800-171
+  detail: security/clearspeed-trust-center.yml
+x-evidence:
+  fetched: '2026-08-04'
+cross_links:
+  errors: errors/clearspeed-problem-types.yml
+  lifecycle: lifecycle/clearspeed-lifecycle.yml
+  authentication: authentication/clearspeed-authentication.yml
+  well_known: well-known/clearspeed-well-known.yml
+  trust_center: security/clearspeed-trust-center.yml
