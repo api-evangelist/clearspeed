@@ -32,24 +32,16 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: clearspeed:integration-api
-  name: Clearspeed Integration API
-  description: 'REST API for embedding Clearspeed voice-based risk assessment into
-    an existing system. Create participants against a questionnaire, update outcome
-    tracking, and create or delete scoped API keys. Assessment results are delivered
-    to a customer-configured webhook endpoint when a result is published or updated.
-    Requests authenticate with a questionnaire-scoped API key in the Authorization
-    header; regional US and UK production hosts are available.'
+- aid: clearspeed:clearspeed-default-api
+  name: Clearspeed Default API
+  description: The Default API from Clearspeed — 4 operation(s) for default.
   humanURL: https://developer.clearspeed.com/apis/public/integration-api
   baseURL: https://api.us.clearspeed.com/questionnaire
   tags:
-  - Risk Assessment
-  - Fraud Detection
-  - Voice Analytics
-  - Screening
+  - Default
   properties:
   - type: OpenAPI
-    url: openapi/clearspeed-integration-api-openapi.yml
+    url: openapi/clearspeed-default-api-openapi.yml
   - type: Documentation
     url: https://developer.clearspeed.com/apis/public/integration-api
   - type: APIReference
@@ -64,8 +56,6 @@ apis:
     url: data-model/clearspeed-data-model.yml
   - type: Examples
     url: examples/clearspeed-integration-api-examples.yml
-  - type: Overlay
-    url: overlays/clearspeed-integration-api-overlay.yaml
   - type: Webhooks
     url: asyncapi/clearspeed-webhooks.yml
 common:
@@ -98,7 +88,7 @@ common:
 - type: VulnerabilityDisclosure
   url: security/clearspeed-vulnerability-disclosure.yml
 - type: OpenAPI
-  url: openapi/clearspeed-integration-api-openapi.yml
+  url: openapi/_original/clearspeed-integration-api-openapi.yml
 - type: MCPServer
   url: mcp/clearspeed-mcp.yml
 - type: ToolCrosswalk
