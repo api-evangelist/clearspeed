@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Clearspeed Integration  API"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Participant",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us.clearspeed.com/questionnaire/v1/participant",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new participant.\n"
+        },
+        {
+          "info": {
+            "name": "Outcome Tracking",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.us.clearspeed.com/questionnaire/v1/participant/:participant_id",
+            "params": [
+              {
+                "name": "participant_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the participant whose outcome tracking should be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the **outcome tracking** fields for an existing participant using the v1 external API format.\n\n- Authenticated using the `authorization` header.\n- Validates that the API key is associated with the participant's questionnaire tenant.\n- Updates the participant's outcome and optional outcome timestamp.\n"
+        },
+        {
+          "info": {
+            "name": "API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.us.clearspeed.com/questionnaire/tenants/:tenant_id/questionnaires/:questionnaire_id/apikeys",
+            "params": [
+              {
+                "name": "tenant_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the tenant"
+              },
+              {
+                "name": "questionnaire_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the questionnaire"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new API key for the specified questionnaire.\n\nRequires a key with the `apikey:write` scope. The full key value is returned **only in\nthis response** — store it securely immediately. Subsequent list calls return a masked version.\n"
+        },
+        {
+          "info": {
+            "name": "API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.us.clearspeed.com/questionnaire/tenants/:tenant_id/questionnaires/:questionnaire_id/apikeys/:apikey",
+            "params": [
+              {
+                "name": "tenant_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the tenant"
+              },
+              {
+                "name": "questionnaire_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the questionnaire"
+              },
+              {
+                "name": "apikey",
+                "value": "",
+                "type": "path",
+                "description": "api_key value of the key to delete.\n"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Permanently delete an API key. Requires the `apikey:delete` scope.\n\nThis action cannot be undone. Any integration using the deleted key will immediately\nstart receiving `401 Unauthorized` responses.\n\nThe `apikey` path parameter accepts:\n- The raw **api_key value**\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

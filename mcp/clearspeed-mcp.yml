@@ -7,8 +7,8 @@ server:
   name: Clearspeed Developer Portal MCP server
   transport: http
   url: https://developer.clearspeed.com/mcp
-  vendor: Redocly Reunite (portal-native "MCP server" feature, enabled in the portal
-    configuration at https://developer.clearspeed.com/app-data.json -> mcpData.docs.enabled)
+  vendor: Redocly Reunite (portal-native "MCP server" feature, enabled in the portal configuration at
+    https://developer.clearspeed.com/app-data.json -> mcpData.docs.enabled)
 authentication:
   required: true
   scheme: OAuth 2.0 Bearer
@@ -20,18 +20,24 @@ authentication:
   token_endpoint: https://developer.clearspeed.com/_mcp/oauth2/token-portal
   registration_endpoint: https://developer.clearspeed.com/_mcp/register
   dynamic_client_registration: true
-  pkce: [S256]
-  grant_types: [authorization_code, refresh_token, client_credentials]
-  scopes: [openid, profile, email, offline_access]
+  pkce:
+  - S256
+  grant_types:
+  - authorization_code
+  - refresh_token
+  - client_credentials
+  scopes:
+  - openid
+  - profile
+  - email
+  - offline_access
 tools: []
-tools_note: >-
-  tools/list is auth-gated. An anonymous JSON-RPC POST of
-  {"jsonrpc":"2.0","id":1,"method":"tools/list"} to https://developer.clearspeed.com/mcp
-  returns HTTP 401 {"error":"unauthorized","message":"Authentication required"} with an
-  OAuth protected-resource challenge. No tool names or inputSchemas could be enumerated
-  anonymously, and none are published in the portal docs, so none are recorded here.
-  This is a DOCUMENTATION MCP server (Redocly serves the portal's own content); Clearspeed
-  publishes no MCP server that fronts the Clearspeed Integration API itself.
+tools_note: tools/list is auth-gated. An anonymous JSON-RPC POST of {"jsonrpc":"2.0","id":1,"method":"tools/list"}
+  to https://developer.clearspeed.com/mcp returns HTTP 401 {"error":"unauthorized","message":"Authentication
+  required"} with an OAuth protected-resource challenge. No tool names or inputSchemas could be enumerated
+  anonymously, and none are published in the portal docs, so none are recorded here. This is a DOCUMENTATION
+  MCP server (Redocly serves the portal's own content); Clearspeed publishes no MCP server that fronts
+  the Clearspeed Integration API itself.
 x-evidence:
   fetched: '2026-08-02'
   probes:
@@ -45,3 +51,10 @@ x-evidence:
   - url: https://developer.clearspeed.com/.well-known/oauth-authorization-server
     method: GET
     http_status: 200
+deployment:
+  mode: remote
+  endpoint: https://developer.clearspeed.com/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

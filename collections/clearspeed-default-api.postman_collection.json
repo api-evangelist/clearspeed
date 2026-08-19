@@ -1,0 +1,1522 @@
+{
+  "item": [
+    {
+      "id": "99b4c305-7f3a-4b97-9e6c-57b553708a43",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7e72c153-2e8d-46c2-b1bf-8ffffae1be8e",
+          "name": "Participant",
+          "request": {
+            "name": "Participant",
+            "description": {
+              "content": "Creates a new participant.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "participant"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_uuid\": \"<string>\",\n  \"interview_ref_num\": \"<string>\",\n  \"phone_number1\": \"<string>\",\n  \"phone_number2\": \"<string>\",\n  \"external_ref_id\": \"<string>\",\n  \"email\": \"<string>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "250be108-e116-4aaa-b065-2a0662faeeb2",
+              "name": "Participant created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"participant_uuid\": \"01977df0-57c1-7dcf-8916-df741aa66691\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\",\n  \"particpant_guide_link\": \"https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691\",\n  \"is_participant_allowed\": true,\n  \"outcome\": null,\n  \"outcome_ts\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "307e39d0-175d-453d-86fb-55924b3cc8fd",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"BAD_REQUEST\",\n  \"status\": 400,\n  \"message\": \"Invalid JSON format\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ed1cb38-ba82-41df-9aa1-e4fc170d3812",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"UNAUTHORIZED\",\n  \"status\": 401,\n  \"message\": \"API key is required\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "076c37f6-2ba4-4d9b-b3ac-99c7fede123f",
+              "name": "API key is not associated with the participant's questionnaire tenant",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"FORBIDDEN\",\n  \"status\": 403,\n  \"message\": \"API Key not associated with this Questionnaire\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a194a16-1f99-46b6-a9fb-1e47d5437267",
+              "name": "Participant not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"NOT_FOUND\",\n  \"status\": 404,\n  \"message\": \"Participant not found\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ef64373-4255-433b-b277-8d7cef4b1f65",
+          "name": "Outcome Tracking",
+          "request": {
+            "name": "Outcome Tracking",
+            "description": {
+              "content": "Update the **outcome tracking** fields for an existing participant using the v1 external API format.\n\n- Authenticated using the `authorization` header.\n- Validates that the API key is associated with the participant's questionnaire tenant.\n- Updates the participant's outcome and optional outcome timestamp.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "participant",
+                ":participant_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "participant_id",
+                  "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"outcome\": \"<string>\",\n  \"outcome_ts\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cea650bd-5e32-4f65-a1b7-946be34b6749",
+              "name": "Outcome tracking updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant",
+                    ":participant_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "participant_id",
+                      "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"project_uuid\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"phone_number1\": \"+916263877039\",\n  \"phone_number2\": \"\",\n  \"interview_ref_num\": \"7858934895810\",\n  \"external_ref_id\": \"12345-46b5-464d-a8e4-afecc\",\n  \"participant_uuid\": \"01977df0-57c1-7dcf-8916-df741aa66691\",\n  \"email\": \"participant@gmail.com\",\n  \"language\": \"English\",\n  \"particpant_guide_link\": \"https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691\",\n  \"is_participant_allowed\": true,\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c8b7707-3bde-49b7-85f0-0797af183b01",
+              "name": "Bad request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant",
+                    ":participant_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "participant_id",
+                      "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"BAD_REQUEST\",\n  \"status\": 400,\n  \"message\": \"Invalid JSON format\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a6a54ea-ca55-41c0-b9b1-dd32d3871357",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant",
+                    ":participant_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "participant_id",
+                      "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"UNAUTHORIZED\",\n  \"status\": 401,\n  \"message\": \"API key is required\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d4a0d12-bad4-4008-bc25-1a049c91810f",
+              "name": "API key is not associated with the participant's questionnaire tenant",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant",
+                    ":participant_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "participant_id",
+                      "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"FORBIDDEN\",\n  \"status\": 403,\n  \"message\": \"API Key not associated with this Questionnaire\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83ee529c-643e-4366-a669-a66343a3bafb",
+              "name": "Participant or questionnaire not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "participant",
+                    ":participant_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "participant_id",
+                      "description": "(Required) UUID of the participant whose outcome tracking should be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"outcome\": \"$10,Reviewed and Mitigated\",\n  \"outcome_ts\": \"2025-12-12T06:06:29Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"NOT_FOUND\",\n  \"status\": 404,\n  \"message\": \"Participant not found\",\n  \"timestamp\": \"27-03-2026 12:34:56\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e312639-73d9-4393-af18-cc1ffc2f97ae",
+          "name": "API Key",
+          "request": {
+            "name": "API Key",
+            "description": {
+              "content": "Create a new API key for the specified questionnaire.\n\nRequires a key with the `apikey:write` scope. The full key value is returned **only in\nthis response** — store it securely immediately. Subsequent list calls return a masked version.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tenants",
+                ":tenant_id",
+                "questionnaires",
+                ":questionnaire_id",
+                "apikeys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "tenant_id",
+                  "description": "(Required) UUID of the tenant"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "questionnaire_id",
+                  "description": "(Required) UUID of the questionnaire"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_name\": \"<string>\",\n  \"scopes\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8b4a1ca8-3a25-4fea-8520-4b15df450f77",
+              "name": "API key created. The `api_key` value is shown only once — save it now.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_name\": \"ci-participant-writer\",\n  \"scopes\": [\n    \"participant:write\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"a1b2c3d4-0000-0000-0000-000000000001\",\n  \"api_key\": \"cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n  \"key_name\": \"ci-participant-writer\",\n  \"scopes\": [\n    \"participant:write\"\n  ],\n  \"questionnaire_id\": \"fd9690b0-9050-4acd-ad74-7f906c07fe93\",\n  \"create_ts\": \"2026-04-10T10:00:00Z\",\n  \"update_ts\": \"2026-04-10T10:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a405708-af55-472d-aff4-a9db7fafc1c3",
+              "name": "Invalid request body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_name\": \"ci-participant-writer\",\n  \"scopes\": [\n    \"participant:write\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"key_name is required and cannot be null or empty\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "970eee4c-b315-4d03-a72e-8b9d1d3165b5",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_name\": \"ci-participant-writer\",\n  \"scopes\": [\n    \"participant:write\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Authorization header is required\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf6328a0-c3ca-424f-b35b-0238c1855768",
+              "name": "API key does not have the `apikey:write` scope",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_name\": \"ci-participant-writer\",\n  \"scopes\": [\n    \"participant:write\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"You are not authorized to perform this operation\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f5021bc-4048-40d6-985c-3c61134b4906",
+          "name": "API Key",
+          "request": {
+            "name": "API Key",
+            "description": {
+              "content": "Permanently delete an API key. Requires the `apikey:delete` scope.\n\nThis action cannot be undone. Any integration using the deleted key will immediately\nstart receiving `401 Unauthorized` responses.\n\nThe `apikey` path parameter accepts:\n- The raw **api_key value**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tenants",
+                ":tenant_id",
+                "questionnaires",
+                ":questionnaire_id",
+                "apikeys",
+                ":apikey"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "tenant_id",
+                  "description": "(Required) UUID of the tenant"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "questionnaire_id",
+                  "description": "(Required) UUID of the questionnaire"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "apikey",
+                  "description": "(Required) api_key value of the key to delete.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "dfa3d5cf-0e2c-4a1e-ad2b-73c6840f21a2",
+              "name": "API key deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys",
+                    ":apikey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apikey",
+                      "description": "(Required) api_key value of the key to delete.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "288846e1-efbd-4e00-a08f-7d0c8a7b913b",
+              "name": "apikey path parameter is missing or empty",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys",
+                    ":apikey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apikey",
+                      "description": "(Required) api_key value of the key to delete.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"API key value is required\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7cebc381-397a-4079-a0e7-b6e6c2673dde",
+              "name": "Missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys",
+                    ":apikey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apikey",
+                      "description": "(Required) api_key value of the key to delete.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Authorization header is required\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "086fa9ba-4d32-47c1-9d9b-feffa47574b8",
+              "name": "Insufficient scope",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys",
+                    ":apikey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apikey",
+                      "description": "(Required) api_key value of the key to delete.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Invalid API key scope\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e269e4c8-75cc-4d99-aafb-fe8b98da0443",
+              "name": "API key not found or does not belong to this questionnaire/tenant",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tenants",
+                    ":tenant_id",
+                    "questionnaires",
+                    ":questionnaire_id",
+                    "apikeys",
+                    ":apikey"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "tenant_id",
+                      "description": "(Required) UUID of the tenant"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "questionnaire_id",
+                      "description": "(Required) UUID of the questionnaire"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "apikey",
+                      "description": "(Required) api_key value of the key to delete.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"API key not found or Invalid tenant for this questionnaire\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.us.clearspeed.com/questionnaire",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "980b2dec-1363-4299-8400-028d3550be60",
+    "name": "Clearspeed Integration  API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\nThe Clearspeed Integration API enables you to programmatically manage participants\nwithin your questionnaires — create new participants and update\noutcome tracking. Additionally, Clearspeed delivers assessment results directly to\nyour system via webhooks, eliminating the need to poll for results.\n\n## Authentication\nAll requests must include your API key in the `Authorization` header:\n```\nAuthorization: <your-api-key>\n```\n\nAPI keys are scoped to a specific questionnaire and carry explicit permissions.\nYour first key must be created from the Clearspeed web application by a questionnaire Admin.\nOnce you have a key with the `apikey:write` scope you can create additional keys via the API.\n\nSee the [API Keys & Authentication guide](https://developer.clearspeed.com/api-keys) for a\nstep-by-step walkthrough and a full description of all available scopes.\n\n## Environments\n| Region | Base URL |\n|--------|----------|\n| US Production | `https://api.us.clearspeed.com/questionnaire` |\n| UK Production | `https://api.uk.clearspeed.com/questionnaire` |\n",
+      "type": "text/plain"
+    }
+  }
+}
