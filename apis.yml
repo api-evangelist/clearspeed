@@ -37,7 +37,8 @@ apis:
   description: The Default API from Clearspeed — 4 operation(s) for default.
   humanURL: https://developer.clearspeed.com/apis/public/integration-api
   baseURL: https://api.us.clearspeed.com/questionnaire
-  tags:
+  tags: []
+  tags_raw:
   - Default
   properties:
   - type: OpenAPI
