@@ -9,6 +9,18 @@ description: 'Clearspeed is a voice-based risk assessment company whose AI analy
   contract on regional US and UK hosts that lets customers create participants against
   a questionnaire, track outcomes, and manage scoped API keys, with assessment results
   delivered back by webhook rather than polling.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.clearspeed.com/opengraph.jpg
 url: https://raw.githubusercontent.com/api-evangelist/clearspeed/refs/heads/main/apis.yml
 x-type: company
