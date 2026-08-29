@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Clearspeed Integration  API
+  title: Clearspeed Integration API
   description: '## Overview
 
     The Clearspeed Integration API enables you to programmatically manage participants
@@ -870,6 +870,43 @@ webhooks:
           description: Result received
 components:
   schemas:
+    LegacyErrorResponse:
+      type: object
+      description: Legacy v1 error response format
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+          - INTERNAL_SERVER_ERROR
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    OutcomeTrackingErrorResponse:
+      type: object
+      description: Error response schema for outcome tracking
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
     ApiKey:
       type: object
       description: An API key record
@@ -911,6 +948,70 @@ components:
           format: date-time
           description: Last updated timestamp (UTC)
           example: '2026-04-10T10:00:00Z'
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
+    OutcomeTrackingResponse:
+      type: object
+      description: Outcome tracking response
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID
+          example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
+        email:
+          type: string
+          description: Email address
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Participant language
+          example: English
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+          - string
+          - 'null'
+          description: Outcome code for the participant
+          example: $10,Reviewed and Mitigated
+        outcome_ts:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Outcome timestamp in RFC3339 format
+          example: '2025-12-12T06:06:29Z'
     LegacyParticipantResponse:
       type: object
       description: Legacy v1 participant response with outcome tracking fields
@@ -963,6 +1064,36 @@ components:
           type:
           - string
           - 'null'
+    ApiKeyCreateRequest:
+      type: object
+      description: Request body for creating a new API key
+      required:
+      - key_name
+      - scopes
+      properties:
+        key_name:
+          type: string
+          description: Human-readable name to identify this key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: 'List of scopes to grant this key. Valid values:
+
+            - `participant:write` — create participants
+
+            - `apikey:write` — create API keys for the same questionnaire
+
+            - `apikey:delete` — delete API keys for the same questionnaire
+
+            '
+          items:
+            type: string
+            enum:
+            - participant:write
+            - apikey:write
+            - apikey:delete
+          example:
+          - participant:write
     ResultWebhookRequest:
       type: object
       description: 'Clearspeed sends this JSON payload to your configured customer webhook URL
@@ -1038,137 +1169,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    ApiKeyCreateRequest:
-      type: object
-      description: Request body for creating a new API key
-      required:
-      - key_name
-      - scopes
-      properties:
-        key_name:
-          type: string
-          description: Human-readable name to identify this key
-          example: ci-participant-writer
-        scopes:
-          type: array
-          description: 'List of scopes to grant this key. Valid values:
-
-            - `participant:write` — create participants
-
-            - `apikey:write` — create API keys for the same questionnaire
-
-            - `apikey:delete` — delete API keys for the same questionnaire
-
-            '
-          items:
-            type: string
-            enum:
-            - participant:write
-            - apikey:write
-            - apikey:delete
-          example:
-          - participant:write
-    OutcomeTrackingResponse:
-      type: object
-      description: Outcome tracking response
-      properties:
-        project_uuid:
-          type: string
-          description: UUID of the project/questionnaire
-          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
-        phone_number1:
-          type: string
-          description: Primary phone number
-          example: '+916263877039'
-        phone_number2:
-          type: string
-          description: Secondary phone number
-          example: ''
-        interview_ref_num:
-          type: string
-          description: Interview reference number
-          example: '7858934895810'
-        external_ref_id:
-          type: string
-          description: External reference ID
-          example: 12345-46b5-464d-a8e4-afecc
-        participant_uuid:
-          type: string
-          description: UUID of the participant
-          example: 01977df0-57c1-7dcf-8916-df741aa66691
-        email:
-          type: string
-          description: Email address
-          example: participant@gmail.com
-        language:
-          type: string
-          description: Participant language
-          example: English
-        particpant_guide_link:
-          type: string
-          description: Link to the participant guide
-          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
-        is_participant_allowed:
-          type: boolean
-          description: Whether participant is allowed after call-blocking checks
-          example: true
-        outcome:
-          type:
-          - string
-          - 'null'
-          description: Outcome code for the participant
-          example: $10,Reviewed and Mitigated
-        outcome_ts:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Outcome timestamp in RFC3339 format
-          example: '2025-12-12T06:06:29Z'
-    ApiKeyErrorResponse:
-      type: object
-      description: Error response for API key operations
-      properties:
-        error:
-          type: string
-          description: Error message
-    OutcomeTrackingErrorResponse:
-      type: object
-      description: Error response schema for outcome tracking
-      properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    LegacyErrorResponse:
-      type: object
-      description: Legacy v1 error response format
-      properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-          - INTERNAL_SERVER_ERROR
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
     Participant:
       type: object
       properties:
