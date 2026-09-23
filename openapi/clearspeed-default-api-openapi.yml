@@ -7,45 +7,7 @@ info:
 
     within your questionnaires — create new participants and update
 
-    outcome tracking. Additionally, Clearspeed delivers assessment results directly to
-
-    your system via webhooks, eliminating the need to poll for results.
-
-
-    ## Authentication
-
-    All requests must include your API key in the `Authorization` header:
-
-    ```
-
-    Authorization: <your-api-key>
-
-    ```
-
-
-    API keys are scoped to a specific questionnaire and carry explicit permissions.
-
-    Your first key must be created from the Clearspeed web application by a questionnaire Admin.
-
-    Once you have a key with the `apikey:write` scope you can create additional keys via the API.
-
-
-    See the [API Keys & Authentication guide](https://developer.clearspeed.com/api-keys) for a
-
-    step-by-step walkthrough and a full description of all available scopes.
-
-
-    ## Environments
-
-    | Region | Base URL |
-
-    |--------|----------|
-
-    | US Production | `https://api.us.clearspeed.com/questionnaire` |
-
-    | UK Production | `https://api.uk.clearspeed.com/questionnaire` |
-
-    '
+    outcome tracking.'
   version: ''
 servers:
 - url: https://api.us.clearspeed.com/questionnaire
@@ -62,9 +24,7 @@ paths:
       security:
       - authorization: []
       summary: Participant
-      description: 'Creates a new participant.
-
-        '
+      description: Creates a new participant.
       requestBody:
         required: true
         content:
@@ -218,6 +178,8 @@ paths:
                     status: 404
                     message: Project not found
                     timestamp: 27-03-2026 12:34:56
+      operationId: postV1Participant
+      x-operation-id-source: derived
   /v1/participant/{participant_id}:
     put:
       tags:
@@ -232,9 +194,7 @@ paths:
 
         - Validates that the API key is associated with the participant''s questionnaire tenant.
 
-        - Updates the participant''s outcome and optional outcome timestamp.
-
-        '
+        - Updates the participant''s outcome and optional outcome timestamp.'
       parameters:
       - name: participant_id
         in: path
@@ -367,6 +327,8 @@ paths:
                     status: 404
                     message: Questionnaire not found
                     timestamp: 27-03-2026 12:34:56
+      operationId: putV1ParticipantByParticipantId
+      x-operation-id-source: derived
   /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys:
     post:
       tags:
@@ -380,9 +342,7 @@ paths:
 
         Requires a key with the `apikey:write` scope. The full key value is returned **only in
 
-        this response** — store it securely immediately. Subsequent list calls return a masked version.
-
-        '
+        this response** — store it securely immediately. Subsequent list calls return a masked version.'
       parameters:
       - name: tenant_id
         in: path
@@ -493,9 +453,7 @@ paths:
 
         The `apikey` path parameter accepts:
 
-        - The raw **api_key value**
-
-        '
+        - The raw **api_key value**'
       parameters:
       - name: tenant_id
         in: path
@@ -585,9 +543,7 @@ webhooks:
 
         when a result is published or updated.
 
-        Customers must return HTTP 200 to acknowledge receipt.
-
-        '
+        Customers must return HTTP 200 to acknowledge receipt.'
       servers:
       - url: https://www.customerapi.com/v1
       requestBody:
@@ -870,91 +826,36 @@ webhooks:
           description: Result received
 components:
   schemas:
-    LegacyErrorResponse:
+    ApiKeyCreateRequest:
       type: object
-      description: Legacy v1 error response format
+      description: Request body for creating a new API key
+      required:
+      - key_name
+      - scopes
       properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-          - INTERNAL_SERVER_ERROR
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    OutcomeTrackingErrorResponse:
-      type: object
-      description: Error response schema for outcome tracking
-      properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    ApiKey:
-      type: object
-      description: An API key record
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Unique identifier of the API key
-          example: a1b2c3d4-0000-0000-0000-000000000001
-        api_key:
-          type: string
-          description: 'The API key value. Returned in full only on creation — masked in all subsequent responses.
-
-            '
-          example: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
         key_name:
           type: string
-          description: Human-readable name for the key
+          description: Human-readable name to identify this key
           example: ci-participant-writer
         scopes:
           type: array
-          description: Scopes granted to this key
+          description: 'List of scopes to grant this key. Valid values:
+
+            - `participant:write` — create participants
+
+            - `apikey:write` — create API keys for the same questionnaire
+
+            - `apikey:delete` — delete API keys for the same questionnaire
+
+            '
           items:
             type: string
+            enum:
+            - participant:write
+            - apikey:write
+            - apikey:delete
           example:
           - participant:write
-        questionnaire_id:
-          type: string
-          format: uuid
-          description: UUID of the questionnaire this key is scoped to
-          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
-        create_ts:
-          type: string
-          format: date-time
-          description: Creation timestamp (UTC)
-          example: '2026-04-10T10:00:00Z'
-        update_ts:
-          type: string
-          format: date-time
-          description: Last updated timestamp (UTC)
-          example: '2026-04-10T10:00:00Z'
-    ApiKeyErrorResponse:
-      type: object
-      description: Error response for API key operations
-      properties:
-        error:
-          type: string
-          description: Error message
     OutcomeTrackingResponse:
       type: object
       description: Outcome tracking response
@@ -1064,36 +965,125 @@ components:
           type:
           - string
           - 'null'
-    ApiKeyCreateRequest:
+    ApiKey:
       type: object
-      description: Request body for creating a new API key
-      required:
-      - key_name
-      - scopes
+      description: An API key record
       properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the API key
+          example: a1b2c3d4-0000-0000-0000-000000000001
+        api_key:
+          type: string
+          description: 'The API key value. Returned in full only on creation — masked in all subsequent responses.
+
+            '
+          example: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
         key_name:
           type: string
-          description: Human-readable name to identify this key
+          description: Human-readable name for the key
           example: ci-participant-writer
         scopes:
           type: array
-          description: 'List of scopes to grant this key. Valid values:
-
-            - `participant:write` — create participants
-
-            - `apikey:write` — create API keys for the same questionnaire
-
-            - `apikey:delete` — delete API keys for the same questionnaire
-
-            '
+          description: Scopes granted to this key
           items:
             type: string
-            enum:
-            - participant:write
-            - apikey:write
-            - apikey:delete
           example:
           - participant:write
+        questionnaire_id:
+          type: string
+          format: uuid
+          description: UUID of the questionnaire this key is scoped to
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        create_ts:
+          type: string
+          format: date-time
+          description: Creation timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+        update_ts:
+          type: string
+          format: date-time
+          description: Last updated timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+    LegacyErrorResponse:
+      type: object
+      description: Legacy v1 error response format
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+          - INTERNAL_SERVER_ERROR
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    Participant:
+      type: object
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number (optional)
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number (optional)
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID (optional)
+          example: 12345-46b5-464d-a8e4-afecc
+        email:
+          type: string
+          description: Email address (optional)
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Language name (optional)
+          example: English
+      required:
+      - project_uuid
+      - interview_ref_num
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
+    OutcomeTrackingErrorResponse:
+      type: object
+      description: Error response schema for outcome tracking
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
     ResultWebhookRequest:
       type: object
       description: 'Clearspeed sends this JSON payload to your configured customer webhook URL
@@ -1169,40 +1159,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    Participant:
-      type: object
-      properties:
-        project_uuid:
-          type: string
-          description: UUID of the project/questionnaire
-          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
-        phone_number1:
-          type: string
-          description: Primary phone number (optional)
-          example: '+916263877039'
-        phone_number2:
-          type: string
-          description: Secondary phone number (optional)
-          example: ''
-        interview_ref_num:
-          type: string
-          description: Interview reference number
-          example: '7858934895810'
-        external_ref_id:
-          type: string
-          description: External reference ID (optional)
-          example: 12345-46b5-464d-a8e4-afecc
-        email:
-          type: string
-          description: Email address (optional)
-          example: participant@gmail.com
-        language:
-          type: string
-          description: Language name (optional)
-          example: English
-      required:
-      - project_uuid
-      - interview_ref_num
   securitySchemes:
     authorization:
       type: apiKey
