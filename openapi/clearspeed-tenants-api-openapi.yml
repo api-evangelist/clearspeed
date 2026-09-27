@@ -1,0 +1,307 @@
+openapi: 3.2.0
+info:
+  title: Clearspeed Integration Tenants API
+  description: '## Overview
+
+    The Clearspeed Integration API enables you to programmatically manage participants
+
+    within your questionnaires — create new participants and update
+
+    outcome tracking.'
+  version: ''
+servers:
+- url: https://api.us.clearspeed.com/questionnaire
+  description: US Production server
+- url: https://api.uk.clearspeed.com/questionnaire
+  description: UK Production server
+tags:
+- name: Tenants
+paths:
+  /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys:
+    post:
+      tags:
+      - Tenants
+      security:
+      - authorization: []
+      summary: API Key
+      operationId: createApiKey
+      description: 'Create a new API key for the specified questionnaire.
+
+
+        Requires a key with the `apikey:write` scope. The full key value is returned **only in
+
+        this response** — store it securely immediately. Subsequent list calls return a masked version.'
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: UUID of the tenant
+        schema:
+          type: string
+          format: uuid
+      - name: questionnaire_id
+        in: path
+        required: true
+        description: UUID of the questionnaire
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyCreateRequest'
+            examples:
+              participantWriter:
+                summary: Key for creating participants
+                value:
+                  key_name: ci-participant-writer
+                  scopes:
+                  - participant:write
+              fullAccess:
+                summary: Key with all participant and key management scopes
+                value:
+                  key_name: admin-key
+                  scopes:
+                  - participant:write
+                  - apikey:write
+                  - apikey:delete
+      responses:
+        '201':
+          description: API key created. The `api_key` value is shown only once — save it now.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+              examples:
+                created:
+                  summary: Newly created key (full value visible)
+                  value:
+                    id: a1b2c3d4-0000-0000-0000-000000000001
+                    api_key: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    key_name: ci-participant-writer
+                    scopes:
+                    - participant:write
+                    questionnaire_id: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                    create_ts: '2026-04-10T10:00:00Z'
+                    update_ts: '2026-04-10T10:00:00Z'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingKeyName:
+                  summary: Missing key_name
+                  value:
+                    error: key_name is required and cannot be null or empty
+                missingScope:
+                  summary: Missing scopes
+                  value:
+                    error: scope is required and cannot be null or empty
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                unauthorized:
+                  summary: No authorization header
+                  value:
+                    error: Authorization header is required
+        '403':
+          description: API key does not have the `apikey:write` scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                forbidden:
+                  summary: Insufficient scope
+                  value:
+                    error: You are not authorized to perform this operation
+  /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey}:
+    delete:
+      tags:
+      - Tenants
+      security:
+      - authorization: []
+      summary: API Key
+      operationId: deleteApiKey
+      description: 'Permanently delete an API key. Requires the `apikey:delete` scope.
+
+
+        This action cannot be undone. Any integration using the deleted key will immediately
+
+        start receiving `401 Unauthorized` responses.
+
+
+        The `apikey` path parameter accepts:
+
+        - The raw **api_key value**'
+      parameters:
+      - name: tenant_id
+        in: path
+        required: true
+        description: UUID of the tenant
+        schema:
+          type: string
+          format: uuid
+      - name: questionnaire_id
+        in: path
+        required: true
+        description: UUID of the questionnaire
+        schema:
+          type: string
+          format: uuid
+      - name: apikey
+        in: path
+        required: true
+        description: 'api_key value of the key to delete.
+
+          '
+        schema:
+          type: string
+        examples:
+          apiKeyValue:
+            summary: Delete by api_key value
+            value: 3f8a1b2c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a
+      responses:
+        '204':
+          description: API key deleted successfully
+        '400':
+          description: apikey path parameter is missing or empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingKeyId:
+                  summary: apikey not provided
+                  value:
+                    error: API key value is required
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                missingHeader:
+                  summary: Authorization header not provided
+                  value:
+                    error: Authorization header is required
+                invalidKey:
+                  summary: API key does not exist or is invalid
+                  value:
+                    error: Invalid API key
+        '403':
+          description: Insufficient scope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                insufficientScope:
+                  summary: API key missing required scope
+                  value:
+                    error: Invalid API key scope
+        '404':
+          description: API key not found or does not belong to this questionnaire/tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyErrorResponse'
+              examples:
+                notFound:
+                  summary: Key not found
+                  value:
+                    error: API key not found or Invalid tenant for this questionnaire
+components:
+  schemas:
+    ApiKey:
+      type: object
+      description: An API key record
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier of the API key
+          example: a1b2c3d4-0000-0000-0000-000000000001
+        api_key:
+          type: string
+          description: 'The API key value. Returned in full only on creation — masked in all subsequent responses.
+
+            '
+          example: cs_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        key_name:
+          type: string
+          description: Human-readable name for the key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: Scopes granted to this key
+          items:
+            type: string
+          example:
+          - participant:write
+        questionnaire_id:
+          type: string
+          format: uuid
+          description: UUID of the questionnaire this key is scoped to
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        create_ts:
+          type: string
+          format: date-time
+          description: Creation timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+        update_ts:
+          type: string
+          format: date-time
+          description: Last updated timestamp (UTC)
+          example: '2026-04-10T10:00:00Z'
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
+    ApiKeyCreateRequest:
+      type: object
+      description: Request body for creating a new API key
+      required:
+      - key_name
+      - scopes
+      properties:
+        key_name:
+          type: string
+          description: Human-readable name to identify this key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: 'List of scopes to grant this key. Valid values:
+
+            - `participant:write` — create participants
+
+            - `apikey:write` — create API keys for the same questionnaire
+
+            - `apikey:delete` — delete API keys for the same questionnaire
+
+            '
+          items:
+            type: string
+            enum:
+            - participant:write
+            - apikey:write
+            - apikey:delete
+          example:
+          - participant:write
+  securitySchemes:
+    authorization:
+      type: apiKey
+      in: header
+      name: Authorization

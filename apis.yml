@@ -41,7 +41,20 @@ x-source: harvest:secondary-market
 specificationVersion: '0.23'
 created: '2026-08-02'
 modified: '2026-08-04'
+x-docs-platform: redocly
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-24
 tags:
+- Company
+- Risk Assessment
+- Fraud Prevention
+- Voice Analytics
+- Artificial Intelligence
+- Insurance
+- Identity Verification
+- Screening
+- Security
+tags_raw:
 - Company
 - Risk Assessment
 - Fraud Detection
@@ -57,17 +70,69 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- aid: clearspeed:clearspeed-default-api
-  name: Clearspeed Default API
-  description: The Default API from Clearspeed — 4 operation(s) for default.
+- aid: clearspeed:clearspeed-clearspeed-integration-api-api
+  name: Clearspeed Clearspeed Integration API
+  description: >-
+    The Clearspeed Integration API API from Clearspeed — 0 operation(s) for clearspeed integration api.
   humanURL: https://developer.clearspeed.com/apis/public/integration-api
   baseURL: https://api.us.clearspeed.com/questionnaire
-  tags: []
-  tags_raw:
-  - Default
+  tags:
+  - Clearspeed Integration API
   properties:
   - type: OpenAPI
-    url: openapi/clearspeed-default-api-openapi.yml
+    url: openapi/clearspeed-clearspeed-integration-api-api-openapi.yml
+  - type: Documentation
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: APIReference
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: Authentication
+    url: authentication/clearspeed-authentication.yml
+  - type: Conventions
+    url: conventions/clearspeed-conventions.yml
+  - type: ErrorCatalog
+    url: errors/clearspeed-problem-types.yml
+  - type: DataModel
+    url: data-model/clearspeed-data-model.yml
+  - type: Examples
+    url: examples/clearspeed-integration-api-examples.yml
+  - type: Webhooks
+    url: asyncapi/clearspeed-webhooks.yml
+- aid: clearspeed:clearspeed-participant-api
+  name: Clearspeed Participant API
+  description: The Participant API from Clearspeed — 2 operation(s) for participant.
+  humanURL: https://developer.clearspeed.com/apis/public/integration-api
+  baseURL: https://api.us.clearspeed.com/questionnaire
+  tags:
+  - Participant
+  properties:
+  - type: OpenAPI
+    url: openapi/clearspeed-participant-api-openapi.yml
+  - type: Documentation
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: APIReference
+    url: https://developer.clearspeed.com/apis/public/integration-api
+  - type: Authentication
+    url: authentication/clearspeed-authentication.yml
+  - type: Conventions
+    url: conventions/clearspeed-conventions.yml
+  - type: ErrorCatalog
+    url: errors/clearspeed-problem-types.yml
+  - type: DataModel
+    url: data-model/clearspeed-data-model.yml
+  - type: Examples
+    url: examples/clearspeed-integration-api-examples.yml
+  - type: Webhooks
+    url: asyncapi/clearspeed-webhooks.yml
+- aid: clearspeed:clearspeed-tenants-api
+  name: Clearspeed Tenants API
+  description: The Tenants API from Clearspeed — 2 operation(s) for tenants.
+  humanURL: https://developer.clearspeed.com/apis/public/integration-api
+  baseURL: https://api.us.clearspeed.com/questionnaire
+  tags:
+  - Tenants
+  properties:
+  - type: OpenAPI
+    url: openapi/clearspeed-tenants-api-openapi.yml
   - type: Documentation
     url: https://developer.clearspeed.com/apis/public/integration-api
   - type: APIReference

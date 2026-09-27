@@ -1,0 +1,518 @@
+openapi: 3.2.0
+info:
+  title: Clearspeed Integration Participant API
+  description: '## Overview
+
+    The Clearspeed Integration API enables you to programmatically manage participants
+
+    within your questionnaires — create new participants and update
+
+    outcome tracking.'
+  version: ''
+servers:
+- url: https://api.us.clearspeed.com/questionnaire
+  description: US Production server
+- url: https://api.uk.clearspeed.com/questionnaire
+  description: UK Production server
+tags:
+- name: Participant
+paths:
+  /v1/participant:
+    post:
+      tags:
+      - Participant
+      security:
+      - authorization: []
+      summary: Participant
+      description: Creates a new participant.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/Participant'
+            examples:
+              create:
+                summary: Create new participant
+                value:
+                  project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                  phone_number1: '+916263877039'
+                  phone_number2: ''
+                  interview_ref_num: '7858934895810'
+                  external_ref_id: 12345-46b5-464d-a8e4-afecc
+                  email: participant@gmail.com
+                  language: English
+      responses:
+        '200':
+          description: Participant created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyParticipantResponse'
+              examples:
+                createParticipant:
+                  summary: Create participant response
+                  value:
+                    project_uuid: fd9690b0-9050-4acd-ad74-7f906c07fe93
+                    phone_number1: '+916263877039'
+                    phone_number2: ''
+                    interview_ref_num: '7858934895810'
+                    external_ref_id: 12345-46b5-464d-a8e4-afecc
+                    participant_uuid: 01977df0-57c1-7dcf-8916-df741aa66691
+                    email: participant@gmail.com
+                    language: English
+                    particpant_guide_link: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+                    is_participant_allowed: true
+                    outcome: null
+                    outcome_ts: null
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                badRequest:
+                  summary: Invalid JSON format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid JSON format
+                    timestamp: 27-03-2026 12:34:56
+                projectUUIDRequired:
+                  summary: Missing project_uuid
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: project_uuid is required
+                    timestamp: 27-03-2026 12:34:56
+                irnCannotBeEmpty:
+                  summary: Missing interview_ref_num / IRN
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: IRN cannot be empty.
+                    timestamp: 27-03-2026 12:34:56
+                invalidProjectUUIDFormat:
+                  summary: Invalid project_uuid format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid project_uuid format
+                    timestamp: 27-03-2026 12:34:56
+                invalidParticipantUUIDFormat:
+                  summary: Invalid participant_uuid format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid participant_uuid format
+                    timestamp: 27-03-2026 12:34:56
+                invalidEmailFormat:
+                  summary: Invalid email format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid email format
+                    timestamp: 27-03-2026 12:34:56
+                duplicateIRN:
+                  summary: Duplicate IRN
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: 'Error: Duplicate IRN. IRN number 7858934895810 has already been assigned to another participant.'
+                    timestamp: 27-03-2026 12:34:56
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                unauthorized:
+                  summary: API key is required
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: API key is required
+                    timestamp: 27-03-2026 12:34:56
+                invalidAPIKey:
+                  summary: Invalid API key
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: Invalid API key
+                    timestamp: 27-03-2026 12:34:56
+        '403':
+          description: API key is not associated with the participant's questionnaire tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    error: FORBIDDEN
+                    status: 403
+                    message: API Key not associated with this Questionnaire
+                    timestamp: 27-03-2026 12:34:56
+        '404':
+          description: Participant not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyErrorResponse'
+              examples:
+                notFound:
+                  summary: Participant not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Participant not found
+                    timestamp: 27-03-2026 12:34:56
+                projectNotFound:
+                  summary: Project not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Project not found
+                    timestamp: 27-03-2026 12:34:56
+      operationId: postV1Participant
+      x-operation-id-source: derived
+  /v1/participant/{participant_id}:
+    put:
+      tags:
+      - Participant
+      security:
+      - authorization: []
+      summary: Outcome Tracking
+      description: 'Update the **outcome tracking** fields for an existing participant using the v1 external API format.
+
+
+        - Authenticated using the `authorization` header.
+
+        - Validates that the API key is associated with the participant''s questionnaire tenant.
+
+        - Updates the participant''s outcome and optional outcome timestamp.'
+      parameters:
+      - name: participant_id
+        in: path
+        required: true
+        description: UUID of the participant whose outcome tracking should be updated
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                outcome:
+                  type: string
+                  description: Outcome code to set for the participant
+                  example: $10,Reviewed and Mitigated
+                outcome_ts:
+                  type: string
+                  format: date-time
+                  description: 'Outcome timestamp in RFC3339 format. If omitted, the current UTC time will be used.
+
+                    '
+                  example: '2025-12-12T06:06:29Z'
+              required:
+              - outcome
+            examples:
+              updateOutcome:
+                summary: Update participant outcome
+                value:
+                  outcome: $10,Reviewed and Mitigated
+                  outcome_ts: '2025-12-12T06:06:29Z'
+      responses:
+        '200':
+          description: Outcome tracking updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                badRequest:
+                  summary: Invalid JSON format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid JSON format
+                    timestamp: 27-03-2026 12:34:56
+                invalidParticipantIdFormat:
+                  summary: Invalid participant_id format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid participant_id format
+                    timestamp: 27-03-2026 12:34:56
+                invalidOutcomeTsFormat:
+                  summary: Invalid outcome_ts format
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Invalid outcome_ts format. Use RFC3339 format (e.g., 2025-12-12T06:06:29Z)
+                    timestamp: 27-03-2026 12:34:56
+                failedToUpdateOutcomeTracking:
+                  summary: Failed to update outcome tracking
+                  value:
+                    error: BAD_REQUEST
+                    status: 400
+                    message: Failed to update outcome tracking
+                    timestamp: 27-03-2026 12:34:56
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                unauthorized:
+                  summary: API key is required
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: API key is required
+                    timestamp: 27-03-2026 12:34:56
+                invalidAPIKey:
+                  summary: Invalid API key
+                  value:
+                    error: UNAUTHORIZED
+                    status: 401
+                    message: Invalid API key
+                    timestamp: 27-03-2026 12:34:56
+        '403':
+          description: API key is not associated with the participant's questionnaire tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                forbidden:
+                  summary: Forbidden
+                  value:
+                    error: FORBIDDEN
+                    status: 403
+                    message: API Key not associated with this Questionnaire
+                    timestamp: 27-03-2026 12:34:56
+        '404':
+          description: Participant or questionnaire not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutcomeTrackingErrorResponse'
+              examples:
+                notFound:
+                  summary: Participant not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Participant not found
+                    timestamp: 27-03-2026 12:34:56
+                questionnaireNotFound:
+                  summary: Questionnaire not found
+                  value:
+                    error: NOT_FOUND
+                    status: 404
+                    message: Questionnaire not found
+                    timestamp: 27-03-2026 12:34:56
+      operationId: putV1ParticipantByParticipantId
+      x-operation-id-source: derived
+components:
+  schemas:
+    LegacyParticipantResponse:
+      type: object
+      description: Legacy v1 participant response with outcome tracking fields
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID
+          example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
+        email:
+          type: string
+          description: Email address
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Participant language
+          example: English
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+          - string
+          - 'null'
+        outcome_ts:
+          type:
+          - string
+          - 'null'
+    Participant:
+      type: object
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number (optional)
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number (optional)
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID (optional)
+          example: 12345-46b5-464d-a8e4-afecc
+        email:
+          type: string
+          description: Email address (optional)
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Language name (optional)
+          example: English
+      required:
+      - project_uuid
+      - interview_ref_num
+    OutcomeTrackingErrorResponse:
+      type: object
+      description: Error response schema for outcome tracking
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    OutcomeTrackingResponse:
+      type: object
+      description: Outcome tracking response
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID
+          example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
+        email:
+          type: string
+          description: Email address
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Participant language
+          example: English
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+          - string
+          - 'null'
+          description: Outcome code for the participant
+          example: $10,Reviewed and Mitigated
+        outcome_ts:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Outcome timestamp in RFC3339 format
+          example: '2025-12-12T06:06:29Z'
+    LegacyErrorResponse:
+      type: object
+      description: Legacy v1 error response format
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+          - INTERNAL_SERVER_ERROR
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+  securitySchemes:
+    authorization:
+      type: apiKey
+      in: header
+      name: Authorization

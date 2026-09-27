@@ -4,9 +4,13 @@
     "_original/clearspeed-integration-api-openapi.yml"
   ],
   "outputs": [
-    "clearspeed-default-api-openapi.yml"
+    "clearspeed-clearspeed-integration-api-api-openapi.yml",
+    "clearspeed-participant-api-openapi.yml",
+    "clearspeed-tenants-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [
     "clearspeed-integration-api-openapi.yml: info.version missing"
@@ -14,7 +18,16 @@
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "clearspeed-integration-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "clearspeed-integration-api-openapi.yml: tagged paths POST /v1/participant -> Participant",
+    "clearspeed-integration-api-openapi.yml: tagged paths PUT /v1/participant/{participant_id} -> Participant",
+    "clearspeed-integration-api-openapi.yml: tagged paths POST /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys -> Tenants",
+    "clearspeed-integration-api-openapi.yml: tagged paths DELETE /tenants/{tenant_id}/questionnaires/{questionnaire_id}/apikeys/{apikey} -> Tenants",
+    "clearspeed-integration-api-openapi.yml: tagged webhooks POST result_update -> Clearspeed Integration API",
+    "clearspeed-integration-api-openapi.yml: declared missing tag: Clearspeed Integration API",
+    "clearspeed-integration-api-openapi.yml: declared missing tag: Participant",
+    "clearspeed-integration-api-openapi.yml: declared missing tag: Tenants",
+    "superseded outputs removed: clearspeed-default-api-openapi.yml",
+    "apis.yml register: written (+3 apis, 3 total)"
   ],
   "skipped": [
     "clearspeed-default-api-openapi.yml: previously refined output, superseded by openapi/_original/"
