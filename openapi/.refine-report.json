@@ -8,9 +8,7 @@
     "clearspeed-participant-api-openapi.yml",
     "clearspeed-tenants-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [
     "clearspeed-integration-api-openapi.yml: info.version missing"
@@ -26,10 +24,11 @@
     "clearspeed-integration-api-openapi.yml: declared missing tag: Clearspeed Integration API",
     "clearspeed-integration-api-openapi.yml: declared missing tag: Participant",
     "clearspeed-integration-api-openapi.yml: declared missing tag: Tenants",
-    "superseded outputs removed: clearspeed-default-api-openapi.yml",
-    "apis.yml register: written (+3 apis, 3 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
-    "clearspeed-default-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "clearspeed-clearspeed-integration-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "clearspeed-participant-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "clearspeed-tenants-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
