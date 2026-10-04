@@ -331,6 +331,25 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    LegacyErrorResponse:
+      type: object
+      description: Legacy v1 error response format
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+          - INTERNAL_SERVER_ERROR
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
     OutcomeTrackingResponse:
       type: object
       description: Outcome tracking response
@@ -388,77 +407,6 @@ components:
           format: date-time
           description: Outcome timestamp in RFC3339 format
           example: '2025-12-12T06:06:29Z'
-    OutcomeTrackingErrorResponse:
-      type: object
-      description: Error response schema for outcome tracking
-      properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    Participant:
-      type: object
-      properties:
-        project_uuid:
-          type: string
-          description: UUID of the project/questionnaire
-          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
-        phone_number1:
-          type: string
-          description: Primary phone number (optional)
-          example: '+916263877039'
-        phone_number2:
-          type: string
-          description: Secondary phone number (optional)
-          example: ''
-        interview_ref_num:
-          type: string
-          description: Interview reference number
-          example: '7858934895810'
-        external_ref_id:
-          type: string
-          description: External reference ID (optional)
-          example: 12345-46b5-464d-a8e4-afecc
-        email:
-          type: string
-          description: Email address (optional)
-          example: participant@gmail.com
-        language:
-          type: string
-          description: Language name (optional)
-          example: English
-      required:
-      - project_uuid
-      - interview_ref_num
-    LegacyErrorResponse:
-      type: object
-      description: Legacy v1 error response format
-      properties:
-        error:
-          type: string
-          enum:
-          - UNAUTHORIZED
-          - BAD_REQUEST
-          - NOT_FOUND
-          - FORBIDDEN
-          - INTERNAL_SERVER_ERROR
-        status:
-          type: integer
-        message:
-          type: string
-        timestamp:
-          type: string
-          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
     LegacyParticipantResponse:
       type: object
       description: Legacy v1 participant response with outcome tracking fields
@@ -511,6 +459,58 @@ components:
           type:
           - string
           - 'null'
+    OutcomeTrackingErrorResponse:
+      type: object
+      description: Error response schema for outcome tracking
+      properties:
+        error:
+          type: string
+          enum:
+          - UNAUTHORIZED
+          - BAD_REQUEST
+          - NOT_FOUND
+          - FORBIDDEN
+        status:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
+    Participant:
+      type: object
+      properties:
+        project_uuid:
+          type: string
+          description: UUID of the project/questionnaire
+          example: fd9690b0-9050-4acd-ad74-7f906c07fe93
+        phone_number1:
+          type: string
+          description: Primary phone number (optional)
+          example: '+916263877039'
+        phone_number2:
+          type: string
+          description: Secondary phone number (optional)
+          example: ''
+        interview_ref_num:
+          type: string
+          description: Interview reference number
+          example: '7858934895810'
+        external_ref_id:
+          type: string
+          description: External reference ID (optional)
+          example: 12345-46b5-464d-a8e4-afecc
+        email:
+          type: string
+          description: Email address (optional)
+          example: participant@gmail.com
+        language:
+          type: string
+          description: Language name (optional)
+          example: English
+      required:
+      - project_uuid
+      - interview_ref_num
   securitySchemes:
     authorization:
       type: apiKey

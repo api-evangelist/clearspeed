@@ -263,13 +263,6 @@ components:
           format: date-time
           description: Last updated timestamp (UTC)
           example: '2026-04-10T10:00:00Z'
-    ApiKeyErrorResponse:
-      type: object
-      description: Error response for API key operations
-      properties:
-        error:
-          type: string
-          description: Error message
     ApiKeyCreateRequest:
       type: object
       description: Request body for creating a new API key
@@ -300,6 +293,13 @@ components:
             - apikey:delete
           example:
           - participant:write
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
   securitySchemes:
     authorization:
       type: apiKey
