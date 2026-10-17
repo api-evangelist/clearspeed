@@ -222,6 +222,43 @@ paths:
                     error: API key not found or Invalid tenant for this questionnaire
 components:
   schemas:
+    ApiKeyErrorResponse:
+      type: object
+      description: Error response for API key operations
+      properties:
+        error:
+          type: string
+          description: Error message
+    ApiKeyCreateRequest:
+      type: object
+      description: Request body for creating a new API key
+      required:
+      - key_name
+      - scopes
+      properties:
+        key_name:
+          type: string
+          description: Human-readable name to identify this key
+          example: ci-participant-writer
+        scopes:
+          type: array
+          description: 'List of scopes to grant this key. Valid values:
+
+            - `participant:write` — create participants
+
+            - `apikey:write` — create API keys for the same questionnaire
+
+            - `apikey:delete` — delete API keys for the same questionnaire
+
+            '
+          items:
+            type: string
+            enum:
+            - participant:write
+            - apikey:write
+            - apikey:delete
+          example:
+          - participant:write
     ApiKey:
       type: object
       description: An API key record
@@ -263,43 +300,6 @@ components:
           format: date-time
           description: Last updated timestamp (UTC)
           example: '2026-04-10T10:00:00Z'
-    ApiKeyCreateRequest:
-      type: object
-      description: Request body for creating a new API key
-      required:
-      - key_name
-      - scopes
-      properties:
-        key_name:
-          type: string
-          description: Human-readable name to identify this key
-          example: ci-participant-writer
-        scopes:
-          type: array
-          description: 'List of scopes to grant this key. Valid values:
-
-            - `participant:write` — create participants
-
-            - `apikey:write` — create API keys for the same questionnaire
-
-            - `apikey:delete` — delete API keys for the same questionnaire
-
-            '
-          items:
-            type: string
-            enum:
-            - participant:write
-            - apikey:write
-            - apikey:delete
-          example:
-          - participant:write
-    ApiKeyErrorResponse:
-      type: object
-      description: Error response for API key operations
-      properties:
-        error:
-          type: string
-          description: Error message
   securitySchemes:
     authorization:
       type: apiKey

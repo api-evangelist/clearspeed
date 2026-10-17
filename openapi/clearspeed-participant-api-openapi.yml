@@ -350,9 +350,8 @@ components:
         timestamp:
           type: string
           description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    OutcomeTrackingResponse:
+    Participant:
       type: object
-      description: Outcome tracking response
       properties:
         project_uuid:
           type: string
@@ -360,11 +359,11 @@ components:
           example: fd9690b0-9050-4acd-ad74-7f906c07fe93
         phone_number1:
           type: string
-          description: Primary phone number
+          description: Primary phone number (optional)
           example: '+916263877039'
         phone_number2:
           type: string
-          description: Secondary phone number
+          description: Secondary phone number (optional)
           example: ''
         interview_ref_num:
           type: string
@@ -372,41 +371,19 @@ components:
           example: '7858934895810'
         external_ref_id:
           type: string
-          description: External reference ID
+          description: External reference ID (optional)
           example: 12345-46b5-464d-a8e4-afecc
-        participant_uuid:
-          type: string
-          description: UUID of the participant
-          example: 01977df0-57c1-7dcf-8916-df741aa66691
         email:
           type: string
-          description: Email address
+          description: Email address (optional)
           example: participant@gmail.com
         language:
           type: string
-          description: Participant language
+          description: Language name (optional)
           example: English
-        particpant_guide_link:
-          type: string
-          description: Link to the participant guide
-          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
-        is_participant_allowed:
-          type: boolean
-          description: Whether participant is allowed after call-blocking checks
-          example: true
-        outcome:
-          type:
-          - string
-          - 'null'
-          description: Outcome code for the participant
-          example: $10,Reviewed and Mitigated
-        outcome_ts:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Outcome timestamp in RFC3339 format
-          example: '2025-12-12T06:06:29Z'
+      required:
+      - project_uuid
+      - interview_ref_num
     LegacyParticipantResponse:
       type: object
       description: Legacy v1 participant response with outcome tracking fields
@@ -477,8 +454,9 @@ components:
         timestamp:
           type: string
           description: Timestamp in `DD-MM-YYYY HH:MM:SS` format
-    Participant:
+    OutcomeTrackingResponse:
       type: object
+      description: Outcome tracking response
       properties:
         project_uuid:
           type: string
@@ -486,11 +464,11 @@ components:
           example: fd9690b0-9050-4acd-ad74-7f906c07fe93
         phone_number1:
           type: string
-          description: Primary phone number (optional)
+          description: Primary phone number
           example: '+916263877039'
         phone_number2:
           type: string
-          description: Secondary phone number (optional)
+          description: Secondary phone number
           example: ''
         interview_ref_num:
           type: string
@@ -498,19 +476,41 @@ components:
           example: '7858934895810'
         external_ref_id:
           type: string
-          description: External reference ID (optional)
+          description: External reference ID
           example: 12345-46b5-464d-a8e4-afecc
+        participant_uuid:
+          type: string
+          description: UUID of the participant
+          example: 01977df0-57c1-7dcf-8916-df741aa66691
         email:
           type: string
-          description: Email address (optional)
+          description: Email address
           example: participant@gmail.com
         language:
           type: string
-          description: Language name (optional)
+          description: Participant language
           example: English
-      required:
-      - project_uuid
-      - interview_ref_num
+        particpant_guide_link:
+          type: string
+          description: Link to the participant guide
+          example: https://guide.example.com?id=01977df0-57c1-7dcf-8916-df741aa66691
+        is_participant_allowed:
+          type: boolean
+          description: Whether participant is allowed after call-blocking checks
+          example: true
+        outcome:
+          type:
+          - string
+          - 'null'
+          description: Outcome code for the participant
+          example: $10,Reviewed and Mitigated
+        outcome_ts:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Outcome timestamp in RFC3339 format
+          example: '2025-12-12T06:06:29Z'
   securitySchemes:
     authorization:
       type: apiKey
