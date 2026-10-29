@@ -64,5 +64,130 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Clearspeed is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/clearspeed_stock/
+Clearspeed is a voice-based risk assessment company whose AI analyzes involuntary vocal characteristics — tone, cadence, hesitation and stress — in a subject's spoken yes/no answers to produce an objective, language-independent risk indicator without requiring PII. Founded in 2016, it serves insurance claims and underwriting, government and defense vetting, financial services fraud and AML/KYC, plus hiring and vendor screening. Clearspeed exposes the Clearspeed Integration API, a REST contract on regional US and UK hosts that lets customers create participants against a questionnaire, track outcomes, and manage scoped API keys, with assessment results delivered back by webhook rather than polling.
+
+**Areas:** Company · Risk Assessment · Fraud Prevention · Voice Analytics · Artificial Intelligence · Insurance · Identity Verification · Screening · Security
+
+## Clearspeed on APIs.io
+
+Everything profiled for Clearspeed is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/clearspeed/](https://apis.io/providers/clearspeed/)** — or go straight to one of the APIs or properties below.
+
+### APIs (3)
+
+- [Clearspeed Clearspeed Integration API](https://apis.io/apis/clearspeed/clearspeed-clearspeed-integration-api-api/) — The Clearspeed Integration API API from Clearspeed — 0 operation(s) for clearspeed integration api.
+- [Clearspeed Participant API](https://apis.io/apis/clearspeed/clearspeed-participant-api/) — The Participant API from Clearspeed — 2 operation(s) for participant.
+- [Clearspeed Tenants API](https://apis.io/apis/clearspeed/clearspeed-tenants-api/) — The Tenants API from Clearspeed — 2 operation(s) for tenants.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Clearspeed Webhooks](https://apis.io/asyncapis/clearspeed/clearspeed-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Clearspeed Developer Portal MCP server](https://apis.io/servers/clearspeed/clearspeed-developer-portal-mcp-server/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Clearspeed Agentic Access](https://apis.io/agentic-access/clearspeed/clearspeed-agentic-access/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [Clearspeed Integration  API](https://apis.io/collections/clearspeed/open-clearspeed-default-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Clearspeed Integration Api Overlay](https://apis.io/overlays/clearspeed/clearspeed-integration-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Clearspeed Authentication](https://apis.io/security/clearspeed/clearspeed-authentication/)
+- [Clearspeed Domain Security](https://apis.io/security/clearspeed/clearspeed-domain-security/)
+- [Clearspeed Trust Center](https://apis.io/security/clearspeed/clearspeed-trust-center/)
+- [Clearspeed Vulnerability Disclosure](https://apis.io/security/clearspeed/clearspeed-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.clearspeed.com/)
+- [Documentation](https://developer.clearspeed.com/)
+- [Getting started](https://developer.clearspeed.com/)
+- [API reference](https://developer.clearspeed.com/apis/public/integration-api)
+- [Sign up](https://www.clearspeed.com/demo)
+- [Support](https://www.clearspeed.com/contact)
+- [Blog](https://www.clearspeed.com/blog)
+- [Security](https://compliance.clearspeed.com/)
+- [Compliance](https://www.clearspeed.com/security-commitment)
+- [Terms of service](https://www.clearspeed.com/terms-of-service)
+- [Privacy policy](https://www.clearspeed.com/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 49.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 61.7 |
+| Contract governance | 4.5 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 58.9 |
+| Access clarity | 50.0 |
+
+**Agent readiness 56.9** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 33.6** — Insurance
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/clearspeed/](https://apis.io/providers/clearspeed/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Clearspeed: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/clearspeed/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
